@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -17,11 +18,14 @@ public class Main extends Application {
 
     private static Scene scene;
     public static Objeto user;
+    public static String version;
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("GF_login"), 640, 480);
+        scene = new Scene(loadFXML("view/GF_login"));
+        stage.getIcons().add(new Image(Main.class.getResource("icons/logo.png").toExternalForm()));
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 

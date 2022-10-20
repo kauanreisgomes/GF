@@ -8,7 +8,7 @@
             "type": "java",
             "name": "Launch App",
             "request": "launch",
-            "vmArgs": "--module-path \"C:\\Program Files\\Java\\javafx\\lib\" --add-modules javafx.controls,javafx.graphics,javafx.fxml",
+            //"vmArgs": "--module-path \"C:\\Program Files\\Java\\javafx\\lib\" --add-modules javafx.controls,javafx.graphics,javafx.fxml",
             "mainClass": "com.decattech.App",
             "projectName": "gf"
         },
@@ -16,14 +16,12 @@
             "type": "java",
             "name": "Launch Current File",
             "request": "launch",
-            "vmArgs": "--module-path \"C:\\Program Files\\Java\\javafx\\lib\" --add-modules javafx.controls,javafx.graphics,javafx.fxml",
             "mainClass": "${file}"
         },
         {
             "type": "java",
             "name": "Launch App",
             "request": "launch",
-            "vmArgs": "--module-path \"C:\\Program Files\\Java\\javafx\\lib\" --add-modules javafx.controls,javafx.graphics,javafx.fxml",
             "mainClass": "com.decattech/com.decattech.App",
             "projectName": "gf"
         },
@@ -31,7 +29,6 @@
             "type": "java",
             "name": "Launch Main",
             "request": "launch",
-            "vmArgs": "--module-path \"C:\\Program Files\\Java\\javafx\\lib\" --add-modules javafx.controls,javafx.graphics,javafx.fxml",
             "mainClass": "com.decattech/com.decattech.Main",
             "projectName": "gf"
         }

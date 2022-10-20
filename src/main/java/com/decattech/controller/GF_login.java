@@ -1,5 +1,7 @@
 package com.decattech.controller;
 
+import com.decattech.Main;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
@@ -21,12 +23,14 @@ public class GF_login {
     
     @FXML private Button btnlogin;
 
+    @FXML
     void initialize(){
         Load();
     }
 
     private void Load(){
         Keys();
+        lbversao.setText("Versão: "+Main.version);
     }
 
     private void Keys(){
