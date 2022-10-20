@@ -1,0 +1,39 @@
+.text-field{
+    -fx-background-color:#878a88;
+    -fx-text-fill:#000000;
+    -fx-font-size: 14px;
+}
+
+
+
+
+.combo-box, .list-view{
+    -fx-background-color:#aaaeab;
+    -fx-font-size: 14px;
+    
+}
+
+.button{
+    -fx-background-color:#c5c7c6;
+    -fx-font-size: 14px;
+}
+
+.track{
+    -fx-background-color:#c5c7c6;
+}
+
+.label{
+    -fx-text-fill: white;
+}
+
+.checkbox{
+    -fx-text-fill: white;
+}
+
+.button,.text{
+    -fx-text-fill: black;
+}
+
+#obrigatorio{
+    -fx-text-fill:#961d1d;
+}
