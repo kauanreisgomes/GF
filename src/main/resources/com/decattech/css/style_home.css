@@ -65,3 +65,7 @@
 .scroll-pane > .corner {
     -fx-background-color: black;
 }
+
+#menu{
+    -fx-background-color: #001e2b;
+}

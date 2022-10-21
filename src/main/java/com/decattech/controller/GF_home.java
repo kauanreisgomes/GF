@@ -43,7 +43,16 @@ public class GF_home {
 		});
 
 		menu.setOnMouseClicked(e->{
-			if(vbmenu.getTranslateX() != -500){
+			if(vbmenu.getTranslateX() == -500){
+                TranslateTransition slide = new TranslateTransition();
+                slide.setDuration(Duration.seconds(0.3));
+                slide.setNode(vbmenu);
+
+                slide.setToX(0);
+                slide.play();
+                vbmenu.setTranslateX(-500);
+               
+            }else{
                 TranslateTransition slide = new TranslateTransition();
                 slide.setDuration(Duration.seconds(0.3));
                 slide.setNode(vbmenu);
@@ -52,14 +61,6 @@ public class GF_home {
                 slide.play();
 
                 vbmenu.setTranslateX(0);
-            }else{
-                TranslateTransition slide = new TranslateTransition();
-                slide.setDuration(Duration.seconds(0.3));
-                slide.setNode(vbmenu);
-
-                slide.setToX(0);
-                slide.play();
-                vbmenu.setTranslateX(-500);
             }
 		});
 

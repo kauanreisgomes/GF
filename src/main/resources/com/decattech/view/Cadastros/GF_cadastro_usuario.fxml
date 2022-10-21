@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" style="-fx-background-color: #2b2b2b;" stylesheets="@../../css/style_cadastro.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox id="vbox-main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" stylesheets="@../../css/style_cadastro.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
    </padding>
@@ -89,9 +90,9 @@
         <columns>
           <TableColumn prefWidth="75.0" text="ID" />
           <TableColumn maxWidth="10000.0" prefWidth="75.0" text="Nome" />
-            <TableColumn maxWidth="10000.0" prefWidth="75.0" text="Nome de Usuário" />
+            <TableColumn prefWidth="75.0" text="Login" />
             <TableColumn maxWidth="7000.0" prefWidth="75.0" text="Nível de Acesso" />
-            <TableColumn maxWidth="6000.0" prefWidth="75.0" text="Situaçao" />
+            <TableColumn maxWidth="6000.0" prefWidth="75.0" text="Situação" />
         </columns>
          <VBox.margin>
             <Insets top="10.0" />
@@ -125,10 +126,20 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" GridPane.columnIndex="4">
+                  <Button id="btnsearch" maxWidth="1.7976931348623157E308" mnemonicParsing="false" GridPane.columnIndex="4">
                      <font>
                         <Font size="14.0" />
                      </font>
+                     <graphic>
+                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../icons/lupa.png" />
+                           </image>
+                           <viewport>
+                              <Rectangle2D />
+                           </viewport>
+                        </ImageView>
+                     </graphic>
                   </Button>
                   <TextField GridPane.columnIndex="2" />
                   <ComboBox maxWidth="1.7976931348623157E308" prefWidth="150.0" />
