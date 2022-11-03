@@ -1,0 +1,41 @@
+#vbMain{
+    -fx-background-color: #3a3b3d;
+    -fx-padding: 10;
+}
+
+.label{
+    -fx-text-fill: white;
+}
+
+.datasInicioFim{
+    -fx-padding: 10;
+    -fx-border-color: white;
+    -fx-border-radius: 5;
+}
+
+.date-picker{
+    -fx-font-size: 14px;
+}
+
+.combo-box{
+    -fx-font-size: 14px;
+}
+
+.text-field{
+    -fx-font-size: 14px;
+}
+
+.menu-buttom .label {
+    -fx-text-fill: black;
+    -fx-font-size: 14px;
+}
+
+.button{
+    -fx-font-size: 14px;
+}
+
+#lbObrigatorio{
+    -fx-text-fill: rgba(255, 0, 0, 0.676);
+    -fx-font-style: bold;
+    -fx-font-size: 14px;
+}

@@ -1,53 +1,27 @@
 #vbox-main{
+
     -fx-background-color: #2c2c2c;
-    /*#2b2b2b*/
-    /*-fx-focus-color: red;
-    -fx-faint-focus-color: #ff000022;*/
+    
 }
-
-.text-field:focused{
-    -fx-faint-focus-color: transparent;
-    -fx-focus-color:rgba(255,0,0,0.2); /* here rgba (corrected) */
-}
-
-/*.text-field:focused {
-    -fx-background-color: #2c2c2c, #039ED3,#dedfdf;
-    -fx-background-insets: -0.2, 1, 2;
-    -fx-background-radius: 2, 5, 5;
-}
-
-.combo-box:focused {
-    -fx-background-color: #2c2c2c, #039ED3,#dedfdf;
-    -fx-background-insets: -0, 1, 2;
-    -fx-background-radius: 2, 5, 5;
-}
-
-.button:focused {    
-    -fx-background-color: #2c2c2c, #039ED3,#dedfdf;
-    -fx-background-insets: -0, 1, 2;
-    -fx-background-radius: 2, 5, 5;
-}*/
 
 .text-field{
-    -fx-background-color:#dedfdf;
+    /*-fx-background-color:#dedfdf;*/
+    -fx-control-inner-background: #dedfdf;
     -fx-text-fill:#000000;
     -fx-font-size: 14px;
 }
 
 .combo-box, .list-view{
-    -fx-background-color:#dedfdf;
+    -fx-control-inner-background:#dedfdf;
     -fx-font-size: 14px;
     
 }
 
 .button{
-    -fx-background-color:#c5c7c6;
+    -fx-control-inner-background:#c5c7c6;
     -fx-font-size: 14px;
 }
 
-/*.track{
-    -fx-background-color:#c5c7c6;
-}*/
 
 .label{
     -fx-text-fill: white;

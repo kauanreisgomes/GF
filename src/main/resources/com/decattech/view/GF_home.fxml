@@ -33,16 +33,16 @@
                   <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" />
                </columnConstraints>
                <rowConstraints>
-                  <RowConstraints maxHeight="342.0" minHeight="10.0" prefHeight="153.0" valignment="TOP" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="342.0" minHeight="10.0" prefHeight="153.0" valignment="BOTTOM" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="442.0" minHeight="10.0" prefHeight="423.0" valignment="BASELINE" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <ImageView fx:id="logo_emp" fitHeight="156.0" fitWidth="338.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
+                  <ImageView fx:id="ivLogo_Emp" fitHeight="110.0" fitWidth="338.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
                      <StackPane.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </StackPane.margin>
                   </ImageView>
-                  <Label fx:id="lbversion" alignment="BOTTOM_RIGHT" contentDisplay="RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="82.0" prefWidth="644.0" text="Versão: 0.0" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <Label fx:id="lbVersion" alignment="BOTTOM_RIGHT" contentDisplay="RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="82.0" prefWidth="644.0" text="Versão: 0.0" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
@@ -71,10 +71,16 @@
                         <RowConstraints minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <Label fx:id="menu" maxWidth="35.0" prefHeight="35.0" prefWidth="76.0" textFill="WHITE">
+                        <Label fx:id="Menu" maxWidth="35.0" prefHeight="35.0" prefWidth="76.0" style="-fx-focus-color: red;" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                            <graphic>
                               <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -82,12 +88,6 @@
                                  </image>
                               </ImageView>
                            </graphic>
-                           <padding>
-                              <Insets left="10.0" />
-                           </padding>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
                         </Label>
                      </children>
                   </GridPane>
@@ -97,11 +97,11 @@
       </AnchorPane>
       <AnchorPane prefHeight="524.0" prefWidth="256.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="40.0">
          <children>
-            <VBox fx:id="vbmenu" alignment="CENTER" prefHeight="507.0" prefWidth="256.0" style="-fx-background-color: #05071F;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <VBox fx:id="vbMenu" alignment="CENTER" prefHeight="507.0" prefWidth="256.0" style="-fx-background-color: #05071F;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <VBox fx:id="vbmenu_children" alignment="TOP_CENTER" prefHeight="576.0" prefWidth="256.0" style="-fx-background-color: #05071F;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
+                  <VBox fx:id="vbMenu_Children" alignment="TOP_CENTER" prefHeight="576.0" prefWidth="256.0" style="-fx-background-color: #05071F;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <MenuButton fx:id="menu_login" alignment="BASELINE_LEFT" graphicTextGap="22.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" popupSide="RIGHT" prefHeight="37.0" prefWidth="256.0" stylesheets="@../css/style_home.css" text="Login" textFill="WHITE">
+                        <MenuButton fx:id="mbLogin" alignment="BASELINE_LEFT" graphicTextGap="22.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" popupSide="RIGHT" prefHeight="37.0" prefWidth="256.0" stylesheets="@../css/style_home.css" text="Login" textFill="WHITE">
                            <graphic>
                               <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -113,11 +113,11 @@
                               <Insets bottom="10.0" top="20.0" />
                            </VBox.margin>
                            <items>
-                              <MenuItem fx:id="propriedades" mnemonicParsing="false" text="Propriedades" />
-                              <MenuItem fx:id="logout" mnemonicParsing="false" text="Logout" />
+                              <MenuItem fx:id="miPropriedades" mnemonicParsing="false" text="Propriedades" />
+                              <MenuItem fx:id="miLogout" mnemonicParsing="false" text="Logout" />
                            </items>
                         </MenuButton>
-                        <MenuButton fx:id="menu_cadastros" alignment="BASELINE_LEFT" graphicTextGap="22.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" popupSide="RIGHT" prefHeight="37.0" prefWidth="256.0" stylesheets="@../css/style_home.css" text="Cadastros" textFill="WHITE">
+                        <MenuButton fx:id="mbCadastros" alignment="BASELINE_LEFT" graphicTextGap="22.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" popupSide="RIGHT" prefHeight="37.0" prefWidth="256.0" stylesheets="@../css/style_home.css" text="Cadastros" textFill="WHITE">
                            <graphic>
                               <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -129,7 +129,7 @@
                               <Insets bottom="10.0" />
                            </VBox.margin>
                         </MenuButton>
-                        <MenuButton fx:id="menu_processo" alignment="BASELINE_LEFT" graphicTextGap="22.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" popupSide="RIGHT" prefHeight="37.0" prefWidth="256.0" stylesheets="@../css/style_home.css" text="Processos" textFill="WHITE">
+                        <MenuButton fx:id="mbProcesso" alignment="BASELINE_LEFT" graphicTextGap="22.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" popupSide="RIGHT" prefHeight="37.0" prefWidth="256.0" stylesheets="@../css/style_home.css" text="Processos" textFill="WHITE">
                            <graphic>
                               <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -140,8 +140,11 @@
                            <VBox.margin>
                               <Insets bottom="10.0" />
                            </VBox.margin>
+                           <items>
+                              <MenuItem fx:id="miPainel_Pagamentos" mnemonicParsing="false" text="Painel de Pagamentos" />
+                           </items>
                         </MenuButton>
-                        <MenuButton fx:id="menu_config" alignment="BASELINE_LEFT" graphicTextGap="22.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" popupSide="RIGHT" prefHeight="37.0" prefWidth="256.0" stylesheets="@../css/style_home.css" text="Configurações" textFill="WHITE">
+                        <MenuButton fx:id="mbConfig" alignment="BASELINE_LEFT" graphicTextGap="22.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" popupSide="RIGHT" prefHeight="37.0" prefWidth="256.0" stylesheets="@../css/style_home.css" text="Configurações" textFill="WHITE">
                            <graphic>
                               <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -153,12 +156,12 @@
                               <Insets bottom="10.0" />
                            </VBox.margin>
                            <items>
-                              <MenuItem fx:id="cadastro_setor" mnemonicParsing="false" text="Áreas" />
-                              <MenuItem fx:id="liberar_telas" mnemonicParsing="false" text="Liberar Telas" />
-                              <MenuItem fx:id="cadastro_usuarios" mnemonicParsing="false" text="Cadastro de Usuários" />
+                              <MenuItem fx:id="miCadastro_Setor" mnemonicParsing="false" text="Áreas" />
+                              <MenuItem fx:id="miLiberar_Telas" mnemonicParsing="false" text="Liberar Telas" />
+                              <MenuItem fx:id="miCadastro_Usuarios" mnemonicParsing="false" text="Cadastro de Usuários" />
                            </items>
                         </MenuButton>
-                        <MenuButton fx:id="menu_relatorio" alignment="BASELINE_LEFT" graphicTextGap="22.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" popupSide="RIGHT" prefHeight="37.0" prefWidth="256.0" stylesheets="@../css/style_home.css" text="Relatórios" textFill="WHITE">
+                        <MenuButton fx:id="mbRelatorio" alignment="BASELINE_LEFT" graphicTextGap="22.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" popupSide="RIGHT" prefHeight="37.0" prefWidth="256.0" stylesheets="@../css/style_home.css" text="Relatórios" textFill="WHITE">
                            <graphic>
                               <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -170,10 +173,10 @@
                               <Insets bottom="10.0" />
                            </VBox.margin>
                            <items>
-                              <MenuItem fx:id="relatorios" mnemonicParsing="false" text="Relatórios" />
+                              <MenuItem fx:id="miRelatorios" mnemonicParsing="false" text="Relatórios" />
                            </items>
                         </MenuButton>
-                        <Label fx:id="lbuser" alignment="BOTTOM_LEFT" contentDisplay="RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="205.0" prefWidth="256.0" text="Usuário: Kaun Reis" textAlignment="CENTER" textFill="WHITE" VBox.vgrow="ALWAYS">
+                        <Label fx:id="lbUser" alignment="BOTTOM_LEFT" contentDisplay="RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="205.0" prefWidth="256.0" text="Usuário: Kaun Reis" textAlignment="CENTER" textFill="WHITE" VBox.vgrow="ALWAYS">
                            <font>
                               <Font name="System Italic" size="16.0" />
                            </font>

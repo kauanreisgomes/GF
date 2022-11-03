@@ -1,5 +1,8 @@
 package com.decattech.controller;
 
+import com.decattech.Main;
+import com.decattech.ModifyScenes;
+
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 
@@ -11,60 +14,82 @@ import javafx.scene.image.ImageView;
 
 public class GF_home {
 
-    @FXML private ImageView logo_emp;
+    @FXML private ImageView ivLogo_Emp;
     
-    @FXML private Label menu, lbuser,lbversion;
-
-    @FXML private VBox vbmenu,vbmenu_children;
+    @FXML private MenuItem miCadastro_Usuarios,miPropriedades,miLogout,miRelatorios,miLiberar_Telas,miPainel_Pagamentos, miCadastro_Setor;
     
-    @FXML private MenuItem propriedades,liberar_telas,logout,relatorios, cadastro_setor,cadastro_usuarios;
+    @FXML private VBox vbMenu;
+    
+    @FXML private MenuButton mbConfig,mbLogin;
+    
+    @FXML private Label lbUser, Menu;
 
-    @FXML private MenuButton menu_cadastros, menu_relatorio,menu_config,menu_processo,menu_login;
+    @FXML private VBox vbMenu_Children;
+    
+    @FXML private Label lbVersion;
+
+    @FXML private MenuButton mbCadastros, mbProcesso, mbRelatorio;
+
 
     @FXML void initialize(){
         Load();
     }
 
     private void Load(){
+
+        lbVersion.setText("Versão: "+Main.version);
+
         AnimationMenu();
+        MenuAction();
+    }
+
+    private void MenuAction(){
+        miPainel_Pagamentos.setOnAction(e->{
+            System.out.println("Teste");
+        });
+        
+        miCadastro_Usuarios.setOnAction(e->{
+            Object[] parametros = {"view/cadastros/GF_cadastro_usuario","Cadastro de Usuários",true};
+            ModifyScenes.modify(parametros);
+        });
     }
     
     private void AnimationMenu(){
-		vbmenu.setTranslateX(-500);
-		menu.setOnMouseEntered(e->{
+		vbMenu.setTranslateX(-500);
+		Menu.setOnMouseEntered(e->{
 			TranslateTransition slide = new TranslateTransition();
             slide.setDuration(Duration.seconds(0.3));
-            slide.setNode(vbmenu);
+            slide.setNode(vbMenu);
 
             slide.setToX(0);
             slide.play();
-            vbmenu.setTranslateX(-500);
+            vbMenu.setTranslateX(-500);
            
 		});
 
-		menu.setOnMouseClicked(e->{
-			if(vbmenu.getTranslateX() == -500){
+		Menu.setOnMouseClicked(e->{
+			if(vbMenu.getTranslateX() == -500){
                 TranslateTransition slide = new TranslateTransition();
                 slide.setDuration(Duration.seconds(0.3));
-                slide.setNode(vbmenu);
+                slide.setNode(vbMenu);
 
                 slide.setToX(0);
                 slide.play();
-                vbmenu.setTranslateX(-500);
+                vbMenu.setTranslateX(-500);
                
             }else{
                 TranslateTransition slide = new TranslateTransition();
                 slide.setDuration(Duration.seconds(0.3));
-                slide.setNode(vbmenu);
+                slide.setNode(vbMenu);
 
                 slide.setToX(-500);
                 slide.play();
 
-                vbmenu.setTranslateX(0);
+                vbMenu.setTranslateX(0);
             }
 		});
 
-        MenuButton[] p = {menu_cadastros, menu_relatorio,menu_config,menu_processo,menu_login};
+        MenuButton[] p = {mbCadastros, mbRelatorio,mbConfig,mbProcesso,mbLogin};
         for (int i = 0; i < p.length; i++) {
             MenuButton mb = p[i];
             mb.setOnMouseEntered(e->{

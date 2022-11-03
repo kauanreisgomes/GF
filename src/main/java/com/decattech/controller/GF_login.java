@@ -1,27 +1,30 @@
 package com.decattech.controller;
 
 import com.decattech.Main;
+import com.decattech.ModifyScenes;
+import com.functions.FunctionsFX;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.stage.Stage;
 
 public class GF_login {
     
-    @FXML private PasswordField txtpassword;
+    @FXML private PasswordField txtPassword;
 
     
-    @FXML private TextField txtlogin;
+    @FXML private TextField txtLogin;
 
     
-    @FXML private ImageView ivlogo;
+    @FXML private ImageView ivLogo;
 
     
-    @FXML private Label lbversao;
+    @FXML private Label lbVersao;
 
     
-    @FXML private Button btnlogin;
+    @FXML private Button btnLogin;
 
     @FXML
     void initialize(){
@@ -30,29 +33,42 @@ public class GF_login {
 
     private void Load(){
         Keys();
-        lbversao.setText("Versão: "+Main.version);
+        lbVersao.setText("Versão: "+Main.version);
     }
 
     private void Keys(){
-        txtlogin.setOnKeyPressed(e->{
+        txtLogin.setOnKeyPressed(e->{
             if(e.getCode() == KeyCode.ENTER){
                 Logar();
             }
         });
 
-        txtpassword.setOnKeyPressed(e->{
+        txtPassword.setOnKeyPressed(e->{
             if(e.getCode() == KeyCode.ENTER){
                 Logar();
             }
         });
 
-        btnlogin.setOnAction(e->{
+        btnLogin.setOnAction(e->{
             Logar();
         });
     }
 
     private void Logar(){
-        
+        Object[] verify = {"String","Textfield",txtLogin,txtPassword};
+
+        if(FunctionsFX.verify(verify) == false){
+
+            if(txtLogin.getText().equals("kauan") && txtPassword.getText().equals("123")){
+                Object[] parametros = {"view/GF_home","Gestor Financeiro - GF", true};
+                ModifyScenes.modify(parametros);
+                ModifyScenes.close((Stage)txtLogin.getScene().getWindow());
+            }else{
+                Object[] textDialog = {"Atenção!","Usuário ou Senha incorreto!",1};
+                FunctionsFX.dialogBox(textDialog);
+            }
+
+        }
     }
 
 }

@@ -11,6 +11,10 @@
 -fx-background-color : #1620A1;
 }
 
+#btnMenu{
+    /*-fx-background-color: #001e2b;*/
+    -fx-control-inner-background:#001e2b;
+}
 
 .menu-button{
     -fx-background-color : #05071F;

@@ -8,7 +8,6 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-
 import com.functions.models.Objeto;
 
 /**
@@ -19,11 +18,12 @@ public class Main extends Application {
     private static Scene scene;
     public static Objeto user;
     public static String version;
+    public static String icon = Main.class.getResource("icons/logo.png").toExternalForm();
 
     @Override
     public void start(Stage stage) throws IOException {
         scene = new Scene(loadFXML("view/GF_login"));
-        stage.getIcons().add(new Image(Main.class.getResource("icons/logo.png").toExternalForm()));
+        stage.getIcons().add(new Image(icon));
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
@@ -33,7 +33,7 @@ public class Main extends Application {
         scene.setRoot(loadFXML(fxml));
     }
 
-    private static Parent loadFXML(String fxml) throws IOException {
+    public static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
     }

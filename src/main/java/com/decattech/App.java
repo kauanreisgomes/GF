@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
 
 import javax.swing.JOptionPane;
 
@@ -20,33 +21,36 @@ public class App {
     }
 
     public static boolean VerifyVersion(){
-        Object[] parametrosweb = {"http://localhost:8080/versao/2",1};
-		var l = Functions.getJSONfromweb(parametrosweb);
-		if(!l.isEmpty()){
-			if((boolean) l.get(0)){
-				
-				JSONObject jsonweb = (JSONObject)l.get(1);
-				//var jsongpe = (JSONArray)jsonweb.get("java");
-			
-				try {
-					JSONObject gf = Functions.JsonReader(new File(Main.class.getResource("config/version.json").toURI()));
+		try {
+
+			JSONObject gf = Functions.JsonReader(Files.readAllBytes(new File(Main.class.getResource("config/version.json").toURI()).toPath()));
+			Object[] parametrosweb = {"http://localhost:8080/versao/"+gf.getString("id_prog"),1};
+			var l = Functions.getJSONfromweb(parametrosweb);
+			if(!l.isEmpty()){
+				if((boolean) l.get(0)){
+					System.out.println(gf.getString("versao"));
+					JSONObject jsonweb = (JSONObject)l.get(1);
+
 					if(!jsonweb.getString("versao").equals(gf.getString("versao"))){
 						Update();
 						return false;
 					}
-				} catch (URISyntaxException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					
+					
+					Main.version = jsonweb.getString("versao");
+					return true;	
+					
 				}
+			}else{
 				
-				Main.version = jsonweb.getString("versao");
-				return true;	
+				System.out.println("Erro ao verificar a versão!");
+				JOptionPane.showMessageDialog(null, "Erro ao verificar versão!\r\nVerifique sua conexão com a internet!", "Erro de Verificação", JOptionPane.ERROR_MESSAGE);
 				
 			}
-		}else{
-			System.out.println("Erro ao verificar a versão!");
-			JOptionPane.showMessageDialog(null, "Erro ao verificar versão!\r\nVerifique sua conexão com a internet!", "Erro de Verificação", JOptionPane.ERROR_MESSAGE);
-			
+
+		} catch (URISyntaxException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return false;
      
