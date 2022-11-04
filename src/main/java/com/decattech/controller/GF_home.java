@@ -44,14 +44,21 @@ public class GF_home {
     }
 
     private void MenuAction(){
-        miPainel_Pagamentos.setOnAction(e->{
-            System.out.println("Teste");
-        });
-        
-        miCadastro_Usuarios.setOnAction(e->{
-            Object[] parametros = {"view/cadastros/GF_cadastro_usuario","Cadastro de Usuários",true};
-            ModifyScenes.modify(parametros);
-        });
+        //===============PROCESSOS=============== 
+
+            miPainel_Pagamentos.setOnAction(e->{
+                Object[] parametros = {"view/processos/GF_painel_pagamentos","Painel de Pagamentos",true};
+                ModifyScenes.modify(parametros);
+            });
+
+        //===============PROCESSOS=============== 
+
+        //===============CONFIGURAÇÕES=============== 
+            miCadastro_Usuarios.setOnAction(e->{
+                Object[] parametros = {"view/cadastros/GF_cadastro_usuario","Cadastro de Usuários",true};
+                ModifyScenes.modify(parametros);
+            });
+        //===============CONFIGURAÇÕES=============== 
     }
     
     private void AnimationMenu(){

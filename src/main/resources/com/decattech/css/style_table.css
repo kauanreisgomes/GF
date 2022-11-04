@@ -32,11 +32,11 @@
     -fx-background-color: transparent;
 }
 
-.table-view .column-header .label {
+*.table-view *.column-header *.label {
     -fx-font-size: 20;
     -fx-font-family: "Segoe UI Light";
     -fx-text-fill: white;
-    -fx-alignment: center-left;
+    -fx-alignment: CENTER;
     -fx-opacity: 1;
 }
 

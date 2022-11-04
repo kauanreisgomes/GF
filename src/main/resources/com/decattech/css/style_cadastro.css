@@ -6,18 +6,21 @@
 
 .text-field{
     /*-fx-background-color:#dedfdf;*/
+    -fx-base:#c5c7c6;
     -fx-control-inner-background: #dedfdf;
     -fx-text-fill:#000000;
     -fx-font-size: 14px;
 }
 
 .combo-box, .list-view{
+    -fx-base:#c5c7c6;
     -fx-control-inner-background:#dedfdf;
     -fx-font-size: 14px;
     
 }
 
 .button{
+    -fx-base:#c5c7c6;
     -fx-control-inner-background:#c5c7c6;
     -fx-font-size: 14px;
 }

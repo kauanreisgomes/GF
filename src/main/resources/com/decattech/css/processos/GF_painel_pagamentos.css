@@ -35,7 +35,7 @@
 }
 
 #lbObrigatorio{
-    -fx-text-fill: rgba(255, 0, 0, 0.676);
-    -fx-font-style: bold;
+    -fx-text-fill:#e74141;
+    -fx-font-weight: bold;
     -fx-font-size: 14px;
 }

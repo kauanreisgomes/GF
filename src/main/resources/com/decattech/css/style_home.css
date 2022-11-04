@@ -13,6 +13,7 @@
 
 #btnMenu{
     /*-fx-background-color: #001e2b;*/
+    -fx-base:#001e2b;
     -fx-control-inner-background:#001e2b;
 }
 
@@ -72,4 +73,8 @@
 
 #menu{
     -fx-background-color: #001e2b;
+}
+
+#stack .label{
+    -fx-text-fill: black;
 }

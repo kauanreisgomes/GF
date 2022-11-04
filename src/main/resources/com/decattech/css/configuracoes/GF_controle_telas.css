@@ -1,0 +1,36 @@
+#vbox{
+    -fx-background-color: #242021;
+    -fx-padding: 10px;
+}
+
+.label{
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.text-field{
+    -fx-font-size: 14px;
+}
+
+.button{
+    -fx-font-size: 14px;
+}
+
+.combo-box{
+    -fx-font-size: 14px;
+}
+
+.combo-box .label{
+    -fx-text-fill: black;
+    -fx-font-weight: normal;
+}
+
+#btnAdicionar{
+    -fx-font-weight: bold;
+}
+
+#lbObrigatorio{
+    -fx-text-fill:#e74141;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}

@@ -1,11 +1,21 @@
 package com.decattech.controller.processos;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.List;
+
+import com.decattech.model.CsvReader;
+import com.functions.FunctionsFX;
 import com.functions.models.Combobox;
+import com.functions.models.FileChoose;
 import com.functions.models.Loading;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class GF_painel_pagamentos {
@@ -39,7 +49,8 @@ public class GF_painel_pagamentos {
     }
 
     private void Load(){
-
+        DefineValues();
+        Keys();
         Platform.runLater(()->{
             Object[] toBlock = {tbPagamentos,btnFiltrar,btnLimpar,btnPesquisa,mbOutros,txtPesquisa};
             load = new Loading((Stage)cbCliente.getScene().getWindow(), lbLoading, pbLoader, toBlock);
@@ -47,11 +58,51 @@ public class GF_painel_pagamentos {
         });
     }
 
+    private void Keys(){
+        miImportarCsv.setOnAction(e->{
+            ImportCSV();
+        });
+    }
+
     private void InitTable(String where){
 
     }
 
+    @SuppressWarnings("unchecked")
+    private void DefineValues(){
+        String[] values = {"Valor Boleto", "ValorPago", "Sacado_Nome"};
+        TableColumn[] cols = {colValorTitulo,colValorPago,colCliente};
+        FunctionsFX.definevalues(values, cols,null);
+    }
+
     private void Search(){
 
+    }
+
+    private void ImportCSV(){
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.csv");
+        FileChoose choose = new FileChoose("Selecione o arquivo CSV", extFilter, (Stage)lbLoading.getScene().getWindow());
+        try {
+            System.out.println(choose.getFile().toPath());
+            final FileReader fr = new FileReader(choose.getFile());
+           
+            load.startThread(()->{
+                CsvReader csv = new CsvReader();
+                Object[] parametros = {(char)';'};
+                csv.setSeparator(parametros);
+                
+                Object[] list = {"objeto",choose.getFile().toPath().toString()};
+                List<Object> items = csv.getListFromCSV(list);
+            
+                tbPagamentos.setItems(FXCollections.observableArrayList(items));
+                Platform.runLater(()->{
+                    tbPagamentos.refresh();
+                });
+            });
+            fr.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }

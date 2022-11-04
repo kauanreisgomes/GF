@@ -74,7 +74,7 @@
                   </TextField>
                   <VBox alignment="CENTER">
                      <children>
-                        <ImageView fitHeight="20.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../icons/user.png" />
                            </image>
@@ -100,7 +100,7 @@
                   </PasswordField>
                   <VBox alignment="CENTER">
                      <children>
-                        <ImageView fitHeight="20.0" fitWidth="18.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="15.0" fitWidth="15.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../icons/padlock.png" />
                            </image>
@@ -116,7 +116,7 @@
             </Button>
             <Label text="LOGIN" textFill="WHITE">
                <font>
-                  <Font name="Segoe UI Black" size="26.0" />
+                  <Font name="Serif Bold" size="26.0" />
                </font>
             </Label>
          </children>
