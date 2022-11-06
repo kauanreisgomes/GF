@@ -8,6 +8,8 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+
+import com.functions.dao.Query;
 import com.functions.models.Objeto;
 
 /**
@@ -18,12 +20,15 @@ public class Main extends Application {
     private static Scene scene;
     public static Objeto user;
     public static String version;
+    public static Query query;
+    public static String title_prog = "GESTO FINANCEIRO - GF";
     public static String icon = Main.class.getResource("icons/logo.png").toExternalForm();
 
     @Override
     public void start(Stage stage) throws IOException {
         scene = new Scene(loadFXML("view/GF_login"));
         stage.getIcons().add(new Image(icon));
+        stage.setTitle(title_prog);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();

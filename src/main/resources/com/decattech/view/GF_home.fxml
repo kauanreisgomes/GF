@@ -159,6 +159,7 @@
                               <MenuItem fx:id="miCadastro_Setor" mnemonicParsing="false" text="Áreas" />
                               <MenuItem fx:id="miLiberar_Telas" mnemonicParsing="false" text="Liberar Telas" />
                               <MenuItem fx:id="miCadastro_Usuarios" mnemonicParsing="false" text="Cadastro de Usuários" />
+                              <MenuItem fx:id="miAlterarSenha" mnemonicParsing="false" text="Alterar Senha" />
                            </items>
                         </MenuButton>
                         <MenuButton fx:id="mbRelatorio" alignment="BASELINE_LEFT" graphicTextGap="22.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" popupSide="RIGHT" prefHeight="37.0" prefWidth="256.0" stylesheets="@../css/style_home.css" text="Relatórios" textFill="WHITE">

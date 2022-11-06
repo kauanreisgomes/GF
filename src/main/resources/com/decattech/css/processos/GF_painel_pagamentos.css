@@ -4,7 +4,7 @@
 }
 
 .label{
-    -fx-text-fill: white;
+    -fx-text-fill: white
 }
 
 .datasInicioFim{
@@ -14,15 +14,15 @@
 }
 
 .date-picker{
-    -fx-font-size: 14px;
+    -fx-font-size: 14px
 }
 
 .combo-box{
-    -fx-font-size: 14px;
+    -fx-font-size: 14px
 }
 
 .text-field{
-    -fx-font-size: 14px;
+    -fx-font-size: 14px
 }
 
 .menu-buttom .label {
@@ -31,7 +31,7 @@
 }
 
 .button{
-    -fx-font-size: 14px;
+    -fx-font-size: 14px
 }
 
 #lbObrigatorio{

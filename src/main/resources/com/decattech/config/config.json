@@ -1,0 +1,11 @@
+{
+    "fontes" : [
+        {
+            "server" : "decattech",
+            "sgbd" : "mysql",
+            "url" : "jdbc:mysql://localhost:3306/decattech",
+            "user" : "decattech",
+            "password" : "Decat@900"
+        }
+    ]
+}

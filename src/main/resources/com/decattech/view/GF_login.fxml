@@ -7,12 +7,12 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="409.0" prefWidth="451.0" style="-fx-background-color: #414241;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.decattech.controller.GF_login">
+<VBox id="main" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="409.0" prefWidth="451.0" stylesheets="@../css/GF_login.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.decattech.controller.GF_login">
    <padding>
-      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+      <Insets bottom="10.0" />
    </padding>
    <children>
-      <GridPane prefHeight="86.0" prefWidth="431.0">
+      <GridPane id="gridpane-icon" prefHeight="86.0" prefWidth="431.0">
         <columnConstraints>
           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="219.0" />
         </columnConstraints>
@@ -20,7 +20,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <ImageView fx:id="ivLogo" fitHeight="44.0" fitWidth="166.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="ivLogo" fitHeight="48.0" fitWidth="177.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/logo_h.png" />
                </image>
@@ -30,18 +30,19 @@
             <Insets />
          </VBox.margin>
       </GridPane>
-      <GridPane alignment="CENTER" maxHeight="350.0" maxWidth="350.0" prefHeight="321.0" prefWidth="200.0" style="-fx-border-color: #929493; -fx-border-radius: 5;">
+      <GridPane id="gripane-login" alignment="CENTER" maxHeight="350.0" maxWidth="350.0" prefHeight="321.0" prefWidth="200.0">
         <columnConstraints>
           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="40.0" valignment="CENTER" vgrow="SOMETIMES" />
           <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <VBox.margin>
             <Insets bottom="30.0" top="20.0" />
@@ -49,12 +50,12 @@
          <children>
             <Label text="Usuário" textFill="WHITE" GridPane.rowIndex="1">
                <font>
-                  <Font name="Candara" size="14.0" />
+                  <Font name="Tahoma" size="14.0" />
                </font>
             </Label>
             <Label text="Senha" textFill="WHITE" GridPane.rowIndex="3">
                <font>
-                  <Font size="14.0" />
+                  <Font name="Tahoma" size="14.0" />
                </font>
             </Label>
             <GridPane GridPane.rowIndex="2">
@@ -72,7 +73,7 @@
                         <Font size="14.0" />
                      </font>
                   </TextField>
-                  <VBox alignment="CENTER">
+                  <VBox alignment="CENTER" prefHeight="16.0" prefWidth="19.0">
                      <children>
                         <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -109,14 +110,14 @@
                   </VBox>
                </children>
             </GridPane>
-            <Button fx:id="btnLogin" mnemonicParsing="false" text="Entrar" GridPane.rowIndex="6">
+            <Button fx:id="btnLogin" mnemonicParsing="false" style="-fx-base: white;" text="Entrar" GridPane.rowIndex="6">
                <font>
-                  <Font size="14.0" />
+                  <Font name="Tahoma" size="14.0" />
                </font>
             </Button>
-            <Label text="LOGIN" textFill="WHITE">
+            <Label text="LOGIN" textFill="WHITE" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                <font>
-                  <Font name="Serif Bold" size="26.0" />
+                  <Font name="Tahoma Bold" size="18.0" />
                </font>
             </Label>
          </children>

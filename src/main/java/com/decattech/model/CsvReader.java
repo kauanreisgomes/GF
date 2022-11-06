@@ -1,8 +1,11 @@
 package com.decattech.model;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -70,15 +73,15 @@ public class CsvReader {
            
             if(parser != null){
                 try {
-                    reader =  new CSVReaderBuilder(new FileReader(file)).withCSVParser(parser).build();
-                } catch (FileNotFoundException e) {
+                    reader =  new CSVReaderBuilder(new InputStreamReader(new FileInputStream(file), "UTF-8")).withCSVParser(parser).build();
+                } catch (FileNotFoundException | UnsupportedEncodingException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }else{
                 try {
-                    reader =  new CSVReaderBuilder(new FileReader(file)).build();
-                } catch (FileNotFoundException e) {
+                    reader =  new CSVReaderBuilder(new InputStreamReader(new FileInputStream(file), "UTF-8")).build();
+                } catch (FileNotFoundException | UnsupportedEncodingException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
@@ -94,6 +97,7 @@ public class CsvReader {
                 //Cria um for para passar para o objeto
                 for (int i = 1; i < linhas.size(); i++) {
                     for (int j = 0; j < linhas.get(i).length; j++) {
+                        
                         //seta os valores no objeto Objeto, a primeira linha sempre é o nome da coluna!
                         csv.set(linhas.get(0)[j], linhas.get(i)[j]);
                     }
@@ -116,15 +120,15 @@ public class CsvReader {
            
             if(parser != null){
                 try {
-                    reader =  new CSVReaderBuilder(new FileReader(file)).withCSVParser(parser).build();
-                } catch (FileNotFoundException e) {
+                    reader =  new CSVReaderBuilder(new InputStreamReader(new FileInputStream(file), "UTF-8")).withCSVParser(parser).build();
+                } catch (FileNotFoundException | UnsupportedEncodingException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }else{
                 try {
-                    reader =  new CSVReaderBuilder(new FileReader(file)).build();
-                } catch (FileNotFoundException e) {
+                    reader =  new CSVReaderBuilder(new InputStreamReader(new FileInputStream(file), "UTF-8")).build();
+                } catch (FileNotFoundException | UnsupportedEncodingException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
@@ -134,17 +138,21 @@ public class CsvReader {
             try{
                 //ler todo o arquivo e transforma em uma lista de array String
                 List<String[]> linhas = reader.readAll();
-               
+                       
+
                 //Cria um for para passar para o objeto
                 for (int i = 1; i < linhas.size(); i++) {
                     Objeto csv = new Objeto();
                     for (int j = 0; j < linhas.get(i).length; j++) {
+    
                         //seta os valores no objeto Objeto, a primeira linha sempre é o nome da coluna!
-                        csv.set(linhas.get(0)[j], linhas.get(i)[j]);
+                        csv.set(linhas.get(0)[j].trim(), linhas.get(i)[j].replace("'", "").replace("\"", ""));
+                        
                     }
-                 
+                
                     itens.add(csv);
                 }
+                
 
                 return itens;
             }catch(IOException | CsvException e){

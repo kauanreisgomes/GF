@@ -1,0 +1,17 @@
+#main{
+    /*-fx-background-color:  #7d2e2e;*/
+    -fx-background-color:  linear-gradient(from 25% 25% to 100% 100%, #dc1414, #2b2a2b)
+}
+
+#gripane-login{
+    /*-fx-background-color:  linear-gradient(from 25% 25% to 100% 100%, #dc1414, #676d70);*/
+    -fx-background-radius: 5
+    /*-fx-border-color: #929493;
+    -fx-border-radius: 5;*/
+}
+
+#gridpane-icon{
+    -fx-background-color:  #940311;
+    -fx-border-color: #b08d8d;
+    -fx-border-radius: 5
+}

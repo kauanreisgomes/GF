@@ -10,7 +10,7 @@
    <children>
       <GridPane prefHeight="66.0" prefWidth="1080.0">
         <columnConstraints>
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="150.0" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="10.0" minWidth="10.0" prefWidth="10.0" />
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="10.0" minWidth="10.0" prefWidth="10.0" />
@@ -25,7 +25,7 @@
             <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <ComboBox fx:id="cbMes" prefWidth="150.0" GridPane.rowIndex="1" />
+            <ComboBox fx:id="cbMes" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.rowIndex="1" />
             <TextField fx:id="txtAno" promptText="2022" GridPane.columnIndex="2" GridPane.rowIndex="1" />
             <ComboBox fx:id="cbCliente" editable="true" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
             <GridPane styleClass="datasInicioFim" GridPane.columnIndex="6" GridPane.rowIndex="1">
@@ -38,14 +38,14 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <DatePicker fx:id="dtVencimento_Inicio" />
-                  <DatePicker fx:id="dtVencimento_Fim" GridPane.columnIndex="2" />
+                  <DatePicker fx:id="dtVencimento_Inicio" maxWidth="1.7976931348623157E308" />
+                  <DatePicker fx:id="dtVencimento_Fim" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" />
                </children>
             </GridPane>
             <GridPane styleClass="datasInicioFim" GridPane.columnIndex="8" GridPane.rowIndex="1">
                <children>
-                  <DatePicker fx:id="dtLiquidacao_Inicio" />
-                  <DatePicker fx:id="dtLiquidacao_Fim" GridPane.columnIndex="2" />
+                  <DatePicker fx:id="dtLiquidacao_Inicio" maxWidth="1.7976931348623157E308" />
+                  <DatePicker fx:id="dtLiquidacao_Fim" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" />
                </children>
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -149,12 +149,13 @@
       <TableView fx:id="tbPagamentos" prefHeight="200.0" prefWidth="200.0" stylesheets="@../../css/style_table.css" VBox.vgrow="ALWAYS">
         <columns>
           <TableColumn fx:id="colCliente" maxWidth="10000.0" prefWidth="75.0" text="Cliente" />
-          <TableColumn fx:id="colVencimento" maxWidth="10000.0" prefWidth="75.0" text="Vencimento" />
-            <TableColumn fx:id="colLiquidacao" maxWidth="10000.0" prefWidth="75.0" text="Liquidação" />
-            <TableColumn fx:id="colValorTitulo" maxWidth="7000.0" prefWidth="75.0" text="Valor Titulo" />
-            <TableColumn fx:id="colValorPago" maxWidth="7000.0" prefWidth="75.0" text="Valor Pago" />
-            <TableColumn fx:id="colFormaPagamento" maxWidth="10000.0" prefWidth="75.0" text="Forma de Pag." />
-            <TableColumn fx:id="colSituacao" maxWidth="10000.0" prefWidth="75.0" text="Situação" />
+          <TableColumn fx:id="colVencimento" maxWidth="7000.0" prefWidth="75.0" text="Vencimento" />
+            <TableColumn fx:id="colLiquidacao" maxWidth="7000.0" prefWidth="75.0" text="Liquidação" />
+            <TableColumn fx:id="colValorTitulo" maxWidth="6500.0" prefWidth="75.0" text="Valor Titulo" />
+            <TableColumn fx:id="colValorPago" maxWidth="6500.0" prefWidth="75.0" text="Valor Pago" />
+            <TableColumn fx:id="colFormaPagamento" maxWidth="9000.0" prefWidth="75.0" text="Forma de Pag." />
+            <TableColumn fx:id="colSituacao" maxWidth="7000.0" prefWidth="75.0" text="Situação" />
+            <TableColumn fx:id="colButton" maxWidth="3000.0" prefWidth="75.0" />
         </columns>
          <VBox.margin>
             <Insets top="10.0" />

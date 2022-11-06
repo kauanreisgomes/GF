@@ -1,6 +1,6 @@
 #vbox-main{
 
-    -fx-background-color: #2c2c2c;
+    -fx-background-color: #2c2c2c
     
 }
 
@@ -27,19 +27,29 @@
 
 
 .label{
-    -fx-text-fill: white;
+    -fx-text-fill: white
 }
 
 .checkbox{
-    -fx-text-fill: white;
+    -fx-text-fill: white
 }
 
 .button,.text{
-    -fx-text-fill: black;
+    -fx-text-fill: black
 }
 
 #obrigatorio{
-    -fx-text-fill:#e74141;
+    -fx-text-fill:#e74141
+}
+
+.menu-buttom .label{
+    -fx-text-fill: black;
+    -fx-font-size: 14px;
+}
+
+.menu-buttom{
+    -fx-base:#c5c7c6;
+    -fx-control-inner-background:#c5c7c6;
 }
 
 /*#image-search{

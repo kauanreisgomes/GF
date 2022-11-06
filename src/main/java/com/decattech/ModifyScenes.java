@@ -102,15 +102,17 @@ public class ModifyScenes {
 
 	//Fecha todas as telas que estão na listStages
 	public static void CloseAllStages(){
+		
 		if(listStages.isEmpty() == false){
-			for (int i = 0; i < listStages.size(); i++) {
-				
-				if(listStages.get(i).isShowing()){
-					listStages.get(i).close();
-				}
 
-				listStages.remove(listStages.get(i));
+			for (int i = 0; i < listStages.size(); i++) {
+
+		
+				listStages.get(i).close();
+				
 			}
+
+			listStages = new ArrayList<>();
 		}
 	}
 }

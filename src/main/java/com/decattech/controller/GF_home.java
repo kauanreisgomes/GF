@@ -2,12 +2,16 @@ package com.decattech.controller;
 
 import com.decattech.Main;
 import com.decattech.ModifyScenes;
+import com.functions.models.Objeto;
+import com.functions.models.Relatorios;
 
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import javafx.scene.image.ImageView;
@@ -16,7 +20,7 @@ public class GF_home {
 
     @FXML private ImageView ivLogo_Emp;
     
-    @FXML private MenuItem miCadastro_Usuarios,miPropriedades,miLogout,miRelatorios,miLiberar_Telas,miPainel_Pagamentos, miCadastro_Setor;
+    @FXML private MenuItem miCadastro_Usuarios,miPropriedades,miLogout,miRelatorios,miLiberar_Telas,miPainel_Pagamentos, miCadastro_Setor,miAlterarSenha;
     
     @FXML private VBox vbMenu;
     
@@ -30,6 +34,8 @@ public class GF_home {
 
     @FXML private MenuButton mbCadastros, mbProcesso, mbRelatorio;
 
+    public static GF_home gf;
+
 
     @FXML void initialize(){
         Load();
@@ -38,9 +44,13 @@ public class GF_home {
     private void Load(){
 
         lbVersion.setText("Versão: "+Main.version);
-
+        lbUser.setText("Usuário: "+Relatorios.Limited(Main.user.getsFirst("nome_user"),20));
         AnimationMenu();
         MenuAction();
+
+        Platform.runLater(()->{
+            gf = this;
+        });
     }
 
     private void MenuAction(){
@@ -58,7 +68,18 @@ public class GF_home {
                 Object[] parametros = {"view/cadastros/GF_cadastro_usuario","Cadastro de Usuários",true};
                 ModifyScenes.modify(parametros);
             });
+            miAlterarSenha.setOnAction(e->{
+                Object[] parametros = {"view/configuracoes/GF_alterar_senha","Alterar Senha",false};
+                ModifyScenes.modify(parametros);
+            });
         //===============CONFIGURAÇÕES=============== 
+
+        //===============LOGIN===============
+            miLogout.setOnAction(e->{
+                Logout();
+            });
+          
+        //===============LOGIN=============== 
     }
     
     private void AnimationMenu(){
@@ -109,5 +130,13 @@ public class GF_home {
             });
         }
 	}
+
+    public void Logout(){
+        Main.user = new Objeto();
+        ModifyScenes.CloseAllStages();
+        Object[] parametros = {"view/GF_login", Main.title_prog, false};
+        ModifyScenes.modify(parametros);
+       
+    }
 
 }

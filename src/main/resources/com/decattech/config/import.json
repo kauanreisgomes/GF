@@ -1,0 +1,21 @@
+{
+    "separator" : ";",
+    "nome" : "Sacado_Nome",
+    "cpf_cnpj" : "Sacado_Documento",
+    "email" : "Sacado_Email",
+    "tipo_pessoa" : "Sacado_Tipo",
+    "telefone" : "Sacado_Telefone",
+    "logradouro" : "Sacado_Endereco_Logradouro",
+    "bairro" : "Sacado_Endereco_Bairro",
+    "cidade" : "Sacado_Endereco_Cidade",
+    "estado" : "Sacado_Endereco_Estado",
+    "cep" : "Sacado_Endereco_Cep",
+    "dt_emissao" : "Emissao",
+    "dt_vencimento" : "vencimento",
+    "dt_liquidacao" : "LiquidadoEm",
+    "dt_cancelado" : "CanceladoEm",
+    "valor_titulo" : "Valor Boleto",
+    "valor_liquidado" : "ValorLiquidado",
+    "decat_numero" : "SeuNumero",
+    "bs2_numero" : "NossoNumero"
+}

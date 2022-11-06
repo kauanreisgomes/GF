@@ -1,5 +1,5 @@
 #vbox{
-    -fx-background-color: #242021;
+    -fx-background-color: #3a3b3d;
     -fx-padding: 10px;
 }
 
@@ -9,15 +9,15 @@
 }
 
 .text-field{
-    -fx-font-size: 14px;
+    -fx-font-size: 14px
 }
 
 .button{
-    -fx-font-size: 14px;
+    -fx-font-size: 14px
 }
 
 .combo-box{
-    -fx-font-size: 14px;
+    -fx-font-size: 14px
 }
 
 .combo-box .label{
@@ -26,7 +26,7 @@
 }
 
 #btnAdicionar{
-    -fx-font-weight: bold;
+    -fx-font-weight: bold
 }
 
 #lbObrigatorio{
