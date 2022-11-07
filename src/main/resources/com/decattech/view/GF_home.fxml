@@ -1,29 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.*?>
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1050.0" stylesheets="@../css/style_home.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.decattech.controller.GF_home">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1050.0" stylesheets="@../css/style_home.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.decattech.controller.GF_home">
    <children>
       <StackPane id="stack" alignment="TOP_RIGHT" layoutX="1.0" prefHeight="576.0" prefWidth="1050.0" style="-fx-background-color: #adadad;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -34,7 +28,7 @@
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints maxHeight="342.0" minHeight="10.0" prefHeight="153.0" valignment="BOTTOM" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="442.0" minHeight="10.0" prefHeight="423.0" valignment="BASELINE" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="423.0" valignment="BASELINE" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
                   <ImageView fx:id="ivLogo_Emp" fitHeight="110.0" fitWidth="338.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
@@ -128,6 +122,9 @@
                            <VBox.margin>
                               <Insets bottom="10.0" />
                            </VBox.margin>
+                           <items>
+                              <MenuItem fx:id="miCadastro_Cliente" mnemonicParsing="false" text="Cadastro Clientes" />
+                           </items>
                         </MenuButton>
                         <MenuButton fx:id="mbProcesso" alignment="BASELINE_LEFT" graphicTextGap="22.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" popupSide="RIGHT" prefHeight="37.0" prefWidth="256.0" stylesheets="@../css/style_home.css" text="Processos" textFill="WHITE">
                            <graphic>
@@ -179,7 +176,7 @@
                         </MenuButton>
                         <Label fx:id="lbUser" alignment="BOTTOM_LEFT" contentDisplay="RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="205.0" prefWidth="256.0" text="Usuário: Kaun Reis" textAlignment="CENTER" textFill="WHITE" VBox.vgrow="ALWAYS">
                            <font>
-                              <Font name="System Italic" size="16.0" />
+                              <Font name="System Bold" size="14.0" />
                            </font>
                            <padding>
                               <Insets left="10.0" />

@@ -15,9 +15,10 @@ import com.functions.Functions;
 
 public class App {
     public static void main(String[] args) {
-		if(VerifyVersion()){
+		Update();
+		//if(VerifyVersion()){
 			Main.main(args);
-		}
+		//}
     }
 
     public static boolean VerifyVersion(){
@@ -57,6 +58,6 @@ public class App {
     }
 
     public static void Update(){
-        System.out.println("testeee");
+        Main.version = "0.0.1";
     }
 }

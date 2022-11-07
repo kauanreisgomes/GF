@@ -1,14 +1,18 @@
 package com.decattech.model;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import org.apache.commons.io.input.BOMInputStream;
 
 import com.functions.models.Objeto;
 import com.opencsv.CSVParser;
@@ -58,7 +62,10 @@ public class CsvReader {
         if(parametros[0].getClass().equals(CSVParser.class)){
             parser = (CSVParser) parametros[0];
         }else if(parametros[0].getClass().equals(Character.class) || parametros[0].getClass().equals(String.class)){
-            parser = new CSVParserBuilder().withSeparator((char)parametros[0]).build();
+            parser = new CSVParserBuilder()
+            .withSeparator((char)parametros[0])
+            .withIgnoreQuotations(true)
+            .build();
         }else{
             System.out.println("Sem parametros para o valor passado!\r\nFunção: CsvReader.setSeparator();");
         }
@@ -73,15 +80,17 @@ public class CsvReader {
            
             if(parser != null){
                 try {
-                    reader =  new CSVReaderBuilder(new InputStreamReader(new FileInputStream(file), "UTF-8")).withCSVParser(parser).build();
-                } catch (FileNotFoundException | UnsupportedEncodingException e) {
+                    var inputStreamReader = new InputStreamReader(new BOMInputStream(new FileInputStream(file)), StandardCharsets.UTF_8);
+                    reader =  new CSVReaderBuilder(inputStreamReader).withSkipLines(0).withCSVParser(parser).build();
+                } catch (FileNotFoundException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }else{
                 try {
-                    reader =  new CSVReaderBuilder(new InputStreamReader(new FileInputStream(file), "UTF-8")).build();
-                } catch (FileNotFoundException | UnsupportedEncodingException e) {
+                    var inputStreamReader = new InputStreamReader(new BOMInputStream(new FileInputStream(file)), StandardCharsets.UTF_8);
+                    reader =  new CSVReaderBuilder(inputStreamReader).withSkipLines(0).build();
+                } catch (FileNotFoundException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
@@ -99,7 +108,7 @@ public class CsvReader {
                     for (int j = 0; j < linhas.get(i).length; j++) {
                         
                         //seta os valores no objeto Objeto, a primeira linha sempre é o nome da coluna!
-                        csv.set(linhas.get(0)[j], linhas.get(i)[j]);
+                        csv.set(linhas.get(0)[j].trim().replace("?", ""), linhas.get(i)[j]);
                     }
                     
                 }
@@ -120,15 +129,17 @@ public class CsvReader {
            
             if(parser != null){
                 try {
-                    reader =  new CSVReaderBuilder(new InputStreamReader(new FileInputStream(file), "UTF-8")).withCSVParser(parser).build();
-                } catch (FileNotFoundException | UnsupportedEncodingException e) {
+                    var inputStreamReader = new InputStreamReader(new BOMInputStream(new FileInputStream(file)), StandardCharsets.UTF_8);
+                    reader =  new CSVReaderBuilder(inputStreamReader).withCSVParser(parser).build();
+                } catch (FileNotFoundException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }else{
                 try {
-                    reader =  new CSVReaderBuilder(new InputStreamReader(new FileInputStream(file), "UTF-8")).build();
-                } catch (FileNotFoundException | UnsupportedEncodingException e) {
+                    var inputStreamReader = new InputStreamReader(new BOMInputStream(new FileInputStream(file)), StandardCharsets.UTF_8);
+                    reader =  new CSVReaderBuilder(inputStreamReader).build();
+                } catch (FileNotFoundException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }

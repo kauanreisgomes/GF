@@ -106,7 +106,7 @@ public class GF_painel_pagamentos {
         txtAno.setText(LocalDate.now().getYear()+"");
 
         List<Combobox> colunas = new ArrayList<>();
-        for (int i = 0; i < tbPagamentos.getColumns().size(); i++) {
+        for (int i = 0; i < tbPagamentos.getColumns().size()-1; i++) {
             colunas.add(new Combobox(i+1, tbPagamentos.getColumns().get(i).getText()));
         }
         cbPesquisa.setItems(FXCollections.observableArrayList(colunas));
@@ -114,7 +114,7 @@ public class GF_painel_pagamentos {
         DefineValues();
         DefineColumns();
 
-        Object[] psql = {"select id, nome, cpf_cnpj from tb_cliente where status = 0","objeto combobox","nome","id","nome"};
+        Object[] psql = {"select id, nome, cpf_cnpj from tb_cliente where status = 1","objeto combobox","nome","id","nome"};
         cbCliente.setItems(FXCollections.observableArrayList(Connection.query.query(psql)));
         Connection.isOpen(false);
         Object[] toEdit = {cbCliente};
@@ -320,22 +320,22 @@ public class GF_painel_pagamentos {
                                 if(FunctionsD.ConfirmationDialog("Atualizando um pagamento", "Tem certeza disso?") == ButtonType.OK){
                                     Objeto pagamento = (Objeto)getTableView().getItems().get(getIndex());
                                     Connection.isOpen(true);
-                                    boolean value = true;
+                                    boolean noErrors = true;
 
                                   
                                     if(!Functions.isNull(pagamento.getsFirst("status"))){
                                     
-                                        value = Connection.CED("UPDATE tb_registro_pagamentos SET status = "+pagamento.getsFirst("status")+" WHERE id = "+pagamento.getsFirst("id")+" ");
+                                        noErrors = Connection.CED("UPDATE tb_registro_pagamentos SET status = "+pagamento.getsFirst("status")+" WHERE id = "+pagamento.getsFirst("id")+" ");
                                         
                                     }
                                    
                                     if(!Functions.isNull(pagamento.getsFirst("tipo_pagamento"))){
                                         
-                                        value = Connection.CED("UPDATE tb_registro_pagamentos SET tipo_pagamento = "+pagamento.getsFirst("tipo_pagamento")+" WHERE id = "+pagamento.getsFirst("id")+" ");
+                                        noErrors = Connection.CED("UPDATE tb_registro_pagamentos SET tipo_pagamento = "+pagamento.getsFirst("tipo_pagamento")+" WHERE id = "+pagamento.getsFirst("id")+" ");
                                         
                                     }
 
-                                    if(value){
+                                    if(noErrors){
                                         FunctionsD.DialogBox("Pagamento Atualizado com sucesso!", 2);
                                     }
 
@@ -463,8 +463,10 @@ public class GF_painel_pagamentos {
             FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.csv");
             FileChoose choose = new FileChoose("Selecione o arquivo CSV", extFilter, (Stage)lbLoading.getScene().getWindow());
             try {
-                if(choose.getFile() != null){
+                boolean hasFile = choose.getFile() != null;
+                if(hasFile){
                     final FileReader fr = new FileReader(choose.getFile());
+                    
                     if(FunctionsD.ConfirmationDialog("Você está importando um arquivo", "Tem certeza disso?") == ButtonType.OK){
                         load.startThread(()->{
 
@@ -474,15 +476,17 @@ public class GF_painel_pagamentos {
                             Object[] parametros = {separtor};
                             csv.setSeparator(parametros);
                             
-                            Object[] list = {"objeto",choose.getFile().toPath().toString()};
-                            List<Object> items = csv.getListFromCSV(list);
+                            Object[] toList = {"objeto",choose.getFile().toPath().toString()};
+                            List<Object> items = csv.getListFromCSV(toList);
+                            
                             if(!items.isEmpty()){
                                 if(RegistrationClientFromCSV(items)){
                                     if(RecordPayments(items)){
                                         Search();
                                     }
                                 }
-                            } 
+                            }
+
                             Connection.isOpen(false);
 
                         });
@@ -515,8 +519,8 @@ public class GF_painel_pagamentos {
                     String idcliente = Connection.Search("SELECT id FROM tb_cliente WHERE cpf_cnpj = '"+cliente.getsFirst(colunas.getString("cpf_cnpj"))+"'").get(0);
                     where = " WHERE id = '"+idcliente+"'";
                 }
-                    String sql = type+" tb_cliente SET nome = '"+cliente.getsFirst(colunas.getString("nome").toLowerCase())+"', cpf_cnpj = '"+cliente.getsFirst(colunas.getString("cpf_cnpj").toLowerCase())+"'"
-                    +", tipo_pessoa = '"+cliente.getsFirst(colunas.getString("tipo_pessoa")).substring(0, 1).toLowerCase()+"', email = '"+cliente.getsFirst(colunas.getString("email"))+"'"
+                    String sql = type+" tb_cliente SET nome = upper('"+cliente.getsFirst(colunas.getString("nome"))+"'), cpf_cnpj = '"+cliente.getsFirst(colunas.getString("cpf_cnpj"))+"'"
+                    +", tipo_pessoa = '"+cliente.getsFirst(colunas.getString("tipo_pessoa")).substring(0, 1).toUpperCase()+"', email = '"+cliente.getsFirst(colunas.getString("email"))+"'"
                     +", telefone01 = '"+cliente.getsFirst(colunas.getString("telefone"))+"', logradouro = '"+cliente.getsFirst(colunas.getString("logradouro"))+"'"
                     +", bairro = '"+cliente.getsFirst(colunas.getString("bairro"))+"' , cidade = '"+cliente.getsFirst(colunas.getString("cidade"))+"'"
                     +", estado = '"+cliente.getsFirst(colunas.getString("estado"))+"', cep = '"+cliente.getsFirst(colunas.getString("cep"))+"', iduser = '"+Main.user.getsFirst("id")+"'"+where;
@@ -542,61 +546,66 @@ public class GF_painel_pagamentos {
         }else{
             for (int i = 0; i < csv.size(); i++) {
                 Objeto cliente = (Objeto)csv.get(i);
-            
+               
                 boolean ExistsClient = !Connection.Count("SELECT COUNT(*) FROM tb_cliente WHERE cpf_cnpj = '"+cliente.getsFirst(colunas.getString("cpf_cnpj"))+"'").equals("0");
                 String type = "INSERT INTO ";
                 String where = "";
+                
                 if(ExistsClient){
-                    String idcliente = Connection.Search("SELECT id FROM tb_cliente WHERE cpf_cnpj = '"+cliente.getsFirst(colunas.getString("cpf_cnpj"))+"'").get(0);
+                    String idCliente = Connection.Search("SELECT id FROM tb_cliente WHERE cpf_cnpj = '"+cliente.getsFirst(colunas.getString("cpf_cnpj"))+"'").get(0);
                     String vencimento = cliente.getsFirst(colunas.getString("dt_vencimento"));
                     int ano = Integer.parseInt(vencimento.substring(vencimento.lastIndexOf("/")+1));
                     int mes = Integer.parseInt(vencimento.substring(vencimento.indexOf("/")+1, vencimento.lastIndexOf("/")));
-                    boolean ExistsPayment = !Connection.Count("SELECT COUNT(*) FROM tb_registro_pagamentos WHERE id_cliente = '"+idcliente+"' AND mes = "+mes+" AND ano = "+ano+"").equals("0");
+                    
+                    boolean ExistsPayment = !Connection.Count("SELECT COUNT(*) FROM tb_registro_pagamentos WHERE id_cliente = '"+idCliente+"' AND mes = "+mes+" AND ano = "+ano+"").equals("0");
                    
                     if(ExistsPayment){
                         type = "UPDATE ";
-                        where = " WHERE id = '"+Connection.Search("SELECT id FROM tb_registro_pagamentos WHERE id_cliente = '"+idcliente+"' AND mes = "+mes+" AND ano = "+ano+"").get(0)+"'";
+                        where = " WHERE id = '"+Connection.Search("SELECT id FROM tb_registro_pagamentos WHERE id_cliente = '"+idCliente+"' AND mes = "+mes+" AND ano = "+ano+"").get(0)+"'";
                     }
                     
-                    Object[] parseDat = {cliente.getsFirst(colunas.getString("dt_emissao")),"dd/MM/yyyy HH:mm:ss","format string","yyyy-MM-dd HH:mm:ss"};
-                    String dtemissao = (String) Functions.parseDate(parseDat);
-                    String dtliq = "";
+                    Object[] parseDat = {cliente.getsFirst(colunas.getString("dt_emissao")),colunas.getString("dt_emissao_Formato"),"format string","yyyy-MM-dd HH:mm:ss"};
+                    String dtEmissao_Formatado = (String) Functions.parseDate(parseDat);
                     
-                    if(!Functions.isNull(cliente.getsFirst(colunas.getString("dt_liquidacao")))){
+                    boolean hasPagamento = !Functions.isNull(cliente.getsFirst(colunas.getString("dt_liquidacao")));
+                    String tipo_pagamento = "";
+                    String Valor_Liquido = "";
+                    String Liquidacao = "";
+                    
+                    if(hasPagamento){
+
                         parseDat[0] = cliente.getsFirst(colunas.getString("dt_liquidacao"));
-                       
-                        dtliq = "dt_liquidacao = '"+Functions.parseDate(parseDat)+"',";
+                        parseDat[1] = colunas.getString("dt_liquidacao_Formato");
+                        tipo_pagamento = ", tipo_pagamento = 1";
+                        Valor_Liquido = cliente.getsFirst(colunas.getString("valor_liquidado")).replace("R$", "").replace(",", ".").trim();
+                        Liquidacao = ", valor_liquidado = '"+Valor_Liquido+"', dt_liquidacao = '"+Functions.parseDate(parseDat)+"'";
+
                     }
                     
 
                     parseDat[0] = vencimento;
-                    parseDat[1] = "dd/MM/yyyy";
+                    parseDat[1] = colunas.getString("dt_vencimento_Formato");;
                     parseDat[3] = "yyyy-MM-dd";
-                    String dtvenciment = (String) Functions.parseDate(parseDat);
+                    String dtVencimento_Formatado = (String) Functions.parseDate(parseDat);
                    
-                    String tipo_pagamento = "";
+                    double Valor_Titulo = Double.parseDouble(cliente.getsFirst(colunas.getString("valor_titulo")).replace("R$", "").replace(",", ".").trim());
+                    String status = "";
+
+                    boolean wasCanceled = !Functions.isNull(cliente.getsFirst(colunas.getString("dt_cancelado")));
                     
-                    boolean hasPagamento = !Functions.isNull(cliente.getsFirst(colunas.getString("valor_liquidado")));
-                    String valor_liquido = "";
-                    //Se houver valor liquidado é porque o boleto foi pago. tipo_pagamento = 1 é tipo boleto
-                    if(hasPagamento){
-                        tipo_pagamento = ", tipo_pagamento = 1";
-                        valor_liquido = cliente.getsFirst(colunas.getString("valor_liquidado")).replace("R$", "").replace(",", ".").trim();
-                        valor_liquido = ", valor_liquidado = '"+valor_liquido+"'";
+                    if(ExistsPayment == false && wasCanceled == false){
+                        status = ", status = '"+verifyStatus(cliente, colunas)+"'";
+                    }else if(wasCanceled){
+                        Object[] parseDate = {cliente.getsFirst(colunas.getString("dt_cancelado")),colunas.getString("dt_cancelado_Formato"),"format string","yyyy-MM-dd HH:mm:ss"};
+                        status = ", status = 6, dt_cancelado = '"+Functions.parseDate(parseDate)+"'";
                     }
-  
                    
-                    double valor_titulo = Double.parseDouble(cliente.getsFirst(colunas.getString("valor_titulo")).replace("R$", "").replace(",", ".").trim());
                     
-                  
 
-                    String status = verifyStatus(cliente, colunas);
-                    System.out.println(status);
-
-                    String sql = type+" tb_registro_pagamentos SET mes = "+mes+", ano = "+ano+", id_cliente = '"+idcliente+"', dt_emissao = '"+dtemissao+"', dt_vencimento = '"+dtvenciment+"'"
-                    +", "+dtliq+" decat_numero = '"+cliente.getsFirst(colunas.getString("decat_numero"))+"', bs2_numero = '"+cliente.getsFirst(colunas.getString("bs2_numero"))+"'"
-                    +", valor_titulo = '"+valor_titulo+"' "+valor_liquido+tipo_pagamento
-                    +", iduser = '"+Main.user.getsFirst("id")+"', status = '"+status+"'"+where;
+                    String sql = type+" tb_registro_pagamentos SET mes = "+mes+", ano = "+ano+", id_cliente = '"+idCliente+"', dt_emissao = '"+dtEmissao_Formatado+"', dt_vencimento = '"+dtVencimento_Formatado+"'"
+                    +", decat_numero = '"+cliente.getsFirst(colunas.getString("decat_numero"))+"', bs2_numero = '"+cliente.getsFirst(colunas.getString("bs2_numero"))+"'"
+                    +", valor_titulo = '"+Valor_Titulo+"' "+Liquidacao + tipo_pagamento
+                    +", iduser = '"+Main.user.getsFirst("id")+"' "+ status + where;
                     
 
                     //Se der algo errado ele adiciona false ao allRight
@@ -610,24 +619,26 @@ public class GF_painel_pagamentos {
         return allRight;
     }
 
-    //Verifica os status do cliente e retorna o valor do status
+    //Verifica a situação do cliente e retorna o valor do status
     private String verifyStatus(Objeto cliente, JSONObject colunas){
         String dt_vencimento = cliente.getsFirst(colunas.getString("dt_vencimento"));
         String dt_liquidacao = cliente.getsFirst(colunas.getString("dt_liquidacao"));
         String dt_cancelado = cliente.getsFirst(colunas.getString("dt_cancelado"));
        
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate ld = LocalDate.parse(dt_vencimento,formatter);
-
+        LocalDate vencimento = LocalDate.parse(dt_vencimento,formatter);
+        LocalDate hoje = LocalDate.now();
         String status = "";
-
-        if(Functions.isNull(dt_liquidacao)){
-            if(ld.isBefore(LocalDate.now())){
+        boolean notHaveLiquidation = Functions.isNull(dt_liquidacao);
+        boolean notCanceled = Functions.isNull(dt_cancelado);
+        
+        if(notHaveLiquidation){
+            if(vencimento.isBefore(hoje)){
                 status = "4";
-            }else if(ld.isAfter(LocalDate.now()) || ld.isEqual(LocalDate.now())){
+            }else if(vencimento.isAfter(hoje) || vencimento.isEqual(hoje)){
                 status = "3";
             }
-        }else if(Functions.isNull(dt_cancelado)){
+        }else if(notCanceled){
             status = "5";
         }else{
             status = "6";

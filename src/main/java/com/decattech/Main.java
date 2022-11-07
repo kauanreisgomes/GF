@@ -20,8 +20,7 @@ public class Main extends Application {
     private static Scene scene;
     public static Objeto user;
     public static String version;
-    public static Query query;
-    public static String title_prog = "GESTO FINANCEIRO - GF";
+    public static String title_prog = "GESTOR FINANCEIRO - GF";
     public static String icon = Main.class.getResource("icons/logo.png").toExternalForm();
 
     @Override

@@ -20,7 +20,7 @@ public class GF_home {
 
     @FXML private ImageView ivLogo_Emp;
     
-    @FXML private MenuItem miCadastro_Usuarios,miPropriedades,miLogout,miRelatorios,miLiberar_Telas,miPainel_Pagamentos, miCadastro_Setor,miAlterarSenha;
+    @FXML private MenuItem miCadastro_Usuarios,miPropriedades,miLogout,miRelatorios,miLiberar_Telas,miPainel_Pagamentos, miCadastro_Setor,miAlterarSenha, miCadastro_Cliente;
     
     @FXML private VBox vbMenu;
     
@@ -73,6 +73,15 @@ public class GF_home {
                 ModifyScenes.modify(parametros);
             });
         //===============CONFIGURAÇÕES=============== 
+
+        //===============CADASTRO===============
+        
+            miCadastro_Cliente.setOnAction(e->{
+                Object[] parametros = {"view/cadastros/GF_cadastro_cliente","Cadastro de Clientes",true};
+                ModifyScenes.modify(parametros);
+            });
+
+        //===============CADASTRO=============== 
 
         //===============LOGIN===============
             miLogout.setOnAction(e->{
