@@ -1,7 +1,10 @@
 package com.decattech.controller;
 
+import java.net.URI;
+
 import com.decattech.Main;
 import com.decattech.ModifyScenes;
+import com.decattech.model.FunctionsD;
 import com.functions.models.Objeto;
 import com.functions.models.Relatorios;
 
@@ -13,6 +16,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import java.awt.Desktop;
 
 import javafx.scene.image.ImageView;
 
@@ -20,7 +24,7 @@ public class GF_home {
 
     @FXML private ImageView ivLogo_Emp;
     
-    @FXML private MenuItem miCadastro_Usuarios,miPropriedades,miLogout,miRelatorios,miLiberar_Telas,miPainel_Pagamentos, miCadastro_Setor,miAlterarSenha, miCadastro_Cliente;
+    @FXML private MenuItem miCadastro_Usuarios,miPropriedades,miLogout,miRelatorios,miLiberar_Telas,miPainel_Pagamentos, miCadastro_Setor,miAlterarSenha, miCadastro_Cliente, miWebDecattech, miWebBS2;
     
     @FXML private VBox vbMenu;
     
@@ -42,7 +46,8 @@ public class GF_home {
     }
 
     private void Load(){
-
+        var json = FunctionsD.getJSON("config/config.json");
+        //ivLogo_Emp.setImage(FunctionsD.getImage(json.getJSONArray("logo_empresa").getString(1)).getImage());
         lbVersion.setText("Versão: "+Main.version);
         lbUser.setText("Usuário: "+Relatorios.Limited(Main.user.getsFirst("nome_user"),20));
         AnimationMenu();
@@ -59,6 +64,22 @@ public class GF_home {
             miPainel_Pagamentos.setOnAction(e->{
                 Object[] parametros = {"view/processos/GF_painel_pagamentos","Painel de Pagamentos",true};
                 ModifyScenes.modify(parametros);
+            });
+            
+            miWebDecattech.setOnAction(e->{
+                try{
+                    Desktop.getDesktop().browse(new URI("https://decattech.tracksys.com.br/"));
+                }catch(Exception e1){
+                    e1.printStackTrace();
+                }
+            });
+
+            miWebBS2.setOnAction(e->{
+                try{
+                    Desktop.getDesktop().browse(new URI("https://app.empresas.bs2.com/bs2/autenticacao"));
+                }catch(Exception e1){
+                    e1.printStackTrace();
+                }
             });
 
         //===============PROCESSOS=============== 

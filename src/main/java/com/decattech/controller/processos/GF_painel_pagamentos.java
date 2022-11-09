@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -39,7 +40,9 @@ public class GF_painel_pagamentos {
     
     @FXML private TableView<Object> tbPagamentos;
 
-    @FXML private TableColumn<Object, String> colValorPago, colVencimento, colCliente, colLiquidacao, colSituacao, colValorTitulo, colFormaPagamento,colButton;
+    @FXML private TableColumn<Object, String> colValorPago, colVencimento, colCliente, colLiquidacao, colValorTitulo;
+
+    @FXML private TableColumn<Object, Void> colButton, colFormaPagamento, colSituacao;
 
     @FXML private MenuButton mbOutros;
     
@@ -106,25 +109,35 @@ public class GF_painel_pagamentos {
         txtAno.setText(LocalDate.now().getYear()+"");
 
         List<Combobox> colunas = new ArrayList<>();
+
         for (int i = 0; i < tbPagamentos.getColumns().size()-1; i++) {
             colunas.add(new Combobox(i+1, tbPagamentos.getColumns().get(i).getText()));
         }
+
         cbPesquisa.setItems(FXCollections.observableArrayList(colunas));
 
-        DefineValues();
-        DefineColumns();
+        //Atualiza os registros que estavam pendentes e não foram pagos antes do vencimento.
+        Connection.CED("UPDATE tb_registro_pagamentos SET status = 4 WHERE dt_vencimento < now() AND status = 3 AND (valor_liquidado = 0 or valor_liquidado is null) ");
 
         Object[] psql = {"select id, nome, cpf_cnpj from tb_cliente where status = 1","objeto combobox","nome","id","nome"};
         cbCliente.setItems(FXCollections.observableArrayList(Connection.query.query(psql)));
         Connection.isOpen(false);
-        Object[] toEdit = {cbCliente};
-        FunctionsFX.formatComboBoxObject(toEdit);
+       
 
         Platform.runLater(()->{
             Object[] toBlock = {tbPagamentos,btnFiltrar,btnLimpar,btnPesquisa,mbOutros,txtPesquisa};
             load = new Loading((Stage)cbCliente.getScene().getWindow(), lbLoading, pbLoader, toBlock);
             load.setClose(((Stage)cbCliente.getScene().getWindow()).getOnCloseRequest());
-            Search();
+            load.startThread(()->{
+                DefineValues();
+                
+                Object[] toEdit = {cbCliente};
+                FunctionsFX.formatComboBoxObject(toEdit);
+                Platform.runLater(()->{
+                    Search();
+                });
+            });
+           
         });
     }
 
@@ -150,6 +163,8 @@ public class GF_painel_pagamentos {
         btnLimpar.setOnAction(e->{
             Clear();
         });
+
+
     }
 
     private void InitTable(String where){
@@ -207,13 +222,14 @@ public class GF_painel_pagamentos {
         String[] values = {"cliente","dt_vencimento","dt_liquidacao","valor_titulo_f","valor_liquidado_f"};
         TableColumn[] cols = {colCliente,colVencimento,colLiquidacao,colValorTitulo,colValorPago};
         FunctionsFX.definevalues(values, cols,null);
+        DefineColumns();
     }
 
     private void DefineColumns(){
   
-        colFormaPagamento.setCellFactory(new Callback<TableColumn<Object, String>, TableCell<Object, String>>() {
-			public TableCell<Object, String> call(final TableColumn<Object, String> param) {
-				final TableCell<Object, String> cell = new TableCell<Object, String>() {
+        colFormaPagamento.setCellFactory(new Callback<TableColumn<Object, Void>, TableCell<Object, Void>>() {
+			public TableCell<Object, Void> call(final TableColumn<Object, Void> param) {
+				final TableCell<Object, Void> cell = new TableCell<Object, Void>() {
 
                     private final ComboBox<Combobox> cbFormas = new ComboBox<>();
                     {
@@ -233,7 +249,7 @@ public class GF_painel_pagamentos {
                        
                     }
 
-					public void updateItem(String item, boolean empty) {
+					public void updateItem(Void item, boolean empty) {
 
 						super.updateItem(item, empty);
 
@@ -258,10 +274,9 @@ public class GF_painel_pagamentos {
 			}
 		});
        
-
-        colSituacao.setCellFactory(new Callback<TableColumn<Object, String>, TableCell<Object, String>>() {
-			public TableCell<Object, String> call(final TableColumn<Object, String> param) {
-				final TableCell<Object, String> cell = new TableCell<Object, String>() {
+        colSituacao.setCellFactory(new Callback<TableColumn<Object, Void>, TableCell<Object, Void>>() {
+			public TableCell<Object, Void> call(final TableColumn<Object, Void> param) {
+				final TableCell<Object, Void> cell = new TableCell<Object, Void>() {
 
                     private final ComboBox<Combobox> cbSituacao = new ComboBox<>();
                     {
@@ -279,7 +294,7 @@ public class GF_painel_pagamentos {
                         
                     }
 
-					public void updateItem(String item, boolean empty) {
+					public void updateItem(Void item, boolean empty) {
 
 						super.updateItem(item, empty);
 
@@ -305,9 +320,9 @@ public class GF_painel_pagamentos {
 			}
 		});
         
-        colButton.setCellFactory(new Callback<TableColumn<Object, String>, TableCell<Object, String>>() {
-			public TableCell<Object, String> call(final TableColumn<Object, String> param) {
-				final TableCell<Object, String> cell = new TableCell<Object, String>() {
+        colButton.setCellFactory(new Callback<TableColumn<Object, Void>, TableCell<Object, Void>>() {
+			public TableCell<Object, Void> call(final TableColumn<Object, Void> param) {
+				final TableCell<Object, Void> cell = new TableCell<Object, Void>() {
 
                     private final Button btnSave = new Button();
                     {
@@ -321,25 +336,89 @@ public class GF_painel_pagamentos {
                                     Objeto pagamento = (Objeto)getTableView().getItems().get(getIndex());
                                     Connection.isOpen(true);
                                     boolean noErrors = true;
+                                    String sql = "UPDATE tb_registro_pagamentos SET ";
+                                    String[] update = new String[3];
+                                    String where = "WHERE id = "+pagamento.getsFirst("id")+" ";
 
-                                  
+                                    boolean verify = true;
+
                                     if(!Functions.isNull(pagamento.getsFirst("status"))){
+
+                                        if(pagamento.getsFirst("status").equals("5")){
+
+                                            if(Functions.isNull(pagamento.getsFirst("tipo_pagamento"))){
+                                                FunctionsD.DialogBox("Selecione um um tipo de pagamento!", 1);
+                                                verify = false;
+                                            }
+
+                                        }
+
+                                    }
+
+                                    if(verify){
+
+                                        if(!Functions.isNull(pagamento.getsFirst("status"))){
                                     
-                                        noErrors = Connection.CED("UPDATE tb_registro_pagamentos SET status = "+pagamento.getsFirst("status")+" WHERE id = "+pagamento.getsFirst("id")+" ");
-                                        
+                                            update[0] = " status = "+pagamento.getsFirst("status");
+                                            
+                                            if(pagamento.getsFirst("status").equals("5")){
+                                                double value = 0;
+                                               
+                                                try{
+                                                    value = Double.parseDouble(FunctionsFX.InputDialog("Atenção", "Informe o valor pago!", 2));
+                                                }catch(Exception e1){
+                                                    FunctionsD.DialogBox("Informe um valor válido!", 1); 
+                                                    return;
+                                                }
+                                                
+                                                update[2] += " valor_liquidado = "+value;
+                                            }
+                                        }
+                                       
+                                        if(!Functions.isNull(pagamento.getsFirst("tipo_pagamento"))){
+                                            boolean isPix = pagamento.getsFirst("tipo_pagamento").equals("2");
+                                            boolean hasInsertValue = !Functions.isNull(update[2]);
+                                            
+                                            if(hasInsertValue){
+                                                isPix = false;
+                                            }
+    
+                                            update[1] = " tipo_pagamento = "+pagamento.getsFirst("tipo_pagamento");
+                                           
+                                            if(isPix){
+                                                double value = 0;
+                                                while(value == 0){
+                                                    try{
+                                                        value = Double.parseDouble(FunctionsFX.InputDialog("Atenção", "Informe o valor pago!", 2));
+                                                    }catch(Exception e1){
+                                                        value = 0;
+                                                    }
+                                                }
+                                                update[2] += " valor_liquidado = "+value;
+                                            }
+                                            
+                                        }
+    
+                                        sql += update[0] + ", " + update[1];
+                                        if(!Functions.isNull(update[2])){
+                                            sql += ","+update[2];
+                                        }
+                                        sql += where;
+                                        System.out.println(sql);
+    
+                                        noErrors = Connection.CED(sql);
+    
+                                        if(noErrors){
+                                            FunctionsD.DialogBox("Pagamento Atualizado com sucesso!", 2);
+                                            Clear();
+                                            Search();
+                                        }
+    
+                                        Connection.isOpen(false);
+
                                     }
+
                                    
-                                    if(!Functions.isNull(pagamento.getsFirst("tipo_pagamento"))){
-                                        
-                                        noErrors = Connection.CED("UPDATE tb_registro_pagamentos SET tipo_pagamento = "+pagamento.getsFirst("tipo_pagamento")+" WHERE id = "+pagamento.getsFirst("id")+" ");
-                                        
-                                    }
-
-                                    if(noErrors){
-                                        FunctionsD.DialogBox("Pagamento Atualizado com sucesso!", 2);
-                                    }
-
-                                    Connection.isOpen(false);
 
                                 }
                                 
@@ -350,7 +429,7 @@ public class GF_painel_pagamentos {
                        
                     }
 
-					public void updateItem(String item, boolean empty) {
+					public void updateItem(Void item, boolean empty) {
 
 						super.updateItem(item, empty);
 
@@ -370,6 +449,7 @@ public class GF_painel_pagamentos {
 				return cell;
 			}
 		});
+    
     }
 
     private void Search(){

@@ -2,9 +2,12 @@ package com.decattech.controller;
 
 import java.io.IOException;
 
+import org.json.JSONObject;
+
 import com.decattech.Main;
 import com.decattech.ModifyScenes;
 import com.decattech.model.Connection;
+import com.decattech.model.FunctionsD;
 import com.functions.FunctionsFX;
 import com.functions.dao.Query;
 import com.functions.models.Objeto;
@@ -40,6 +43,9 @@ public class GF_login {
     }
 
     private void Load(){
+        var json = FunctionsD.getJSON("config/config.json");
+        //ivLogo.setImage(FunctionsD.getImage(json.getJSONArray("logo_empresa").getString(0)).getImage());
+
         Keys();
         //Inicia conexão
         new Connection();

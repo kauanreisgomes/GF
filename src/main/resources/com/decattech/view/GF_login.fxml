@@ -21,9 +21,6 @@
         </rowConstraints>
          <children>
             <ImageView fx:id="ivLogo" fitHeight="48.0" fitWidth="177.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/logo_h.png" />
-               </image>
             </ImageView>
          </children>
          <VBox.margin>

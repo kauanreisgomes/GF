@@ -139,6 +139,8 @@
                            </VBox.margin>
                            <items>
                               <MenuItem fx:id="miPainel_Pagamentos" mnemonicParsing="false" text="Painel de Pagamentos" />
+                              <MenuItem fx:id="miWebDecattech" mnemonicParsing="false" text="Site Decattech" /> 
+                              <MenuItem fx:id="miWebBS2" mnemonicParsing="false" text="Site BS2" />
                            </items>
                         </MenuButton>
                         <MenuButton fx:id="mbConfig" alignment="BASELINE_LEFT" graphicTextGap="22.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" popupSide="RIGHT" prefHeight="37.0" prefWidth="256.0" stylesheets="@../css/style_home.css" text="Configurações" textFill="WHITE">
