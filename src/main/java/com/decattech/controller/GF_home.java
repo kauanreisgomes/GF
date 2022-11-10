@@ -24,7 +24,8 @@ public class GF_home {
 
     @FXML private ImageView ivLogo_Emp;
     
-    @FXML private MenuItem miCadastro_Usuarios,miPropriedades,miLogout,miRelatorios,miLiberar_Telas,miPainel_Pagamentos, miCadastro_Setor,miAlterarSenha, miCadastro_Cliente, miWebDecattech, miWebBS2;
+    @FXML private MenuItem miCadastro_Usuarios,miPropriedades,miLogout,miRelatorios,miLiberar_Telas,miPainel_Pagamentos, miCadastro_Setor,miAlterarSenha, miCadastro_Cliente, miWebDecattech, miWebBS2,
+    miCadastro_Telas;
     
     @FXML private VBox vbMenu;
     
@@ -46,10 +47,14 @@ public class GF_home {
     }
 
     private void Load(){
-        var json = FunctionsD.getJSON("config/config.json");
-        //ivLogo_Emp.setImage(FunctionsD.getImage(json.getJSONArray("logo_empresa").getString(1)).getImage());
+        var json = FunctionsD.getJSON("config/config.json").getJSONObject("logo_empresa");
+        if(json.getBoolean("isvisible")){
+            ivLogo_Emp.setImage(FunctionsD.getImage(json.getJSONArray("images").getString(1)).getImage());
+        }
+        
         lbVersion.setText("Versão: "+Main.version);
-        lbUser.setText("Usuário: "+Relatorios.Limited(Main.user.getsFirst("nome_user"),20));
+        String[] name = Main.user.getsFirst("nome_user").split(" ");
+        lbUser.setText("Usuário: "+Relatorios.Limited(name[0],20));
         AnimationMenu();
         MenuAction();
 
@@ -91,6 +96,11 @@ public class GF_home {
             });
             miAlterarSenha.setOnAction(e->{
                 Object[] parametros = {"view/configuracoes/GF_alterar_senha","Alterar Senha",false};
+                ModifyScenes.modify(parametros);
+            });
+
+            miCadastro_Telas.setOnAction(e->{
+                Object[] parametros = {"view/configuracoes/GF_cadastro_telas","Cadastro de Telas",true};
                 ModifyScenes.modify(parametros);
             });
         //===============CONFIGURAÇÕES=============== 
@@ -162,10 +172,12 @@ public class GF_home {
 	}
 
     public void Logout(){
+        
         Main.user = new Objeto();
         ModifyScenes.CloseAllStages();
         Object[] parametros = {"view/GF_login", Main.title_prog, false};
         ModifyScenes.modify(parametros);
+        ModifyScenes.close((Stage)vbMenu.getScene().getWindow());  
        
     }
 

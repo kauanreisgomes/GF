@@ -43,8 +43,10 @@ public class GF_login {
     }
 
     private void Load(){
-        var json = FunctionsD.getJSON("config/config.json");
-        //ivLogo.setImage(FunctionsD.getImage(json.getJSONArray("logo_empresa").getString(0)).getImage());
+        var json = FunctionsD.getJSON("config/config.json").getJSONObject("logo_empresa");
+        if(json.getBoolean("isvisible")){
+            ivLogo.setImage(FunctionsD.getImage(json.getJSONArray("images").getString(0)).getImage());
+        }
 
         Keys();
         //Inicia conexão

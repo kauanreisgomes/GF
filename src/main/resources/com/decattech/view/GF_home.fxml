@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
@@ -17,9 +25,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1050.0" stylesheets="@../css/style_home.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.decattech.controller.GF_home">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1050.0" stylesheets="@../css/style_home.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.decattech.controller.GF_home">
    <children>
-      <StackPane id="stack" alignment="TOP_RIGHT" layoutX="1.0" prefHeight="576.0" prefWidth="1050.0" style="-fx-background-color: #adadad;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <StackPane id="stack" alignment="TOP_RIGHT" layoutX="1.0" layoutY="40.0" prefHeight="536.0" prefWidth="1050.0" style="-fx-background-color: #adadad;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
          <children>
             <GridPane alignment="TOP_RIGHT">
                <columnConstraints>
@@ -27,7 +35,7 @@
                   <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" />
                </columnConstraints>
                <rowConstraints>
-                  <RowConstraints maxHeight="342.0" minHeight="10.0" prefHeight="153.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="342.0" minHeight="10.0" prefHeight="153.0" valignment="TOP" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="423.0" valignment="BASELINE" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
@@ -89,11 +97,11 @@
             </HBox>
          </children>
       </AnchorPane>
-      <AnchorPane prefHeight="524.0" prefWidth="256.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="40.0">
+      <AnchorPane id="menuaba" prefHeight="524.0" prefWidth="256.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="40.0">
          <children>
             <VBox fx:id="vbMenu" alignment="CENTER" prefHeight="507.0" prefWidth="256.0" style="-fx-background-color: #05071F;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <VBox fx:id="vbMenu_Children" alignment="TOP_CENTER" prefHeight="576.0" prefWidth="256.0" style="-fx-background-color: #05071F;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
+                  <VBox fx:id="vbMenu_Children" alignment="TOP_CENTER" prefHeight="576.0" prefWidth="256.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
                      <children>
                         <MenuButton fx:id="mbLogin" alignment="BASELINE_LEFT" graphicTextGap="22.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" popupSide="RIGHT" prefHeight="37.0" prefWidth="256.0" stylesheets="@../css/style_home.css" text="Login" textFill="WHITE">
                            <graphic>
@@ -155,8 +163,8 @@
                               <Insets bottom="10.0" />
                            </VBox.margin>
                            <items>
-                              <MenuItem fx:id="miCadastro_Setor" mnemonicParsing="false" text="Áreas" />
                               <MenuItem fx:id="miLiberar_Telas" mnemonicParsing="false" text="Liberar Telas" />
+                              <MenuItem fx:id="miCadastro_Telas" mnemonicParsing="false" text="Cadastro de Telas" />
                               <MenuItem fx:id="miCadastro_Usuarios" mnemonicParsing="false" text="Cadastro de Usuários" />
                               <MenuItem fx:id="miAlterarSenha" mnemonicParsing="false" text="Alterar Senha" />
                            </items>

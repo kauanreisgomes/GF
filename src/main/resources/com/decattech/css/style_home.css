@@ -21,12 +21,12 @@
     -fx-background-color : #05071F
     /*-fx-text-fill : #e7e5e5;*/
 }
+
 .menu-button:hover{
--fx-background-color : #10165F
+    -fx-background-color : #10165F
 }
-.menu-button:pressed
-{
--fx-background-color : #1620A1
+.menu-button:pressed{
+    -fx-background-color : #1620A1
 }
 
 .scroll-pane {
@@ -72,8 +72,9 @@
 }
 
 #menu{
-    -fx-background-color: #001e2b
+    -fx-background-color: #05071ffb;
 }
+
 
 #stack .label{
     -fx-text-fill: black

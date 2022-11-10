@@ -1,5 +1,8 @@
 {
-    "logo_empresa" : ["images/logo_h.png", "images/logo.png"],
+    "logo_empresa" : {
+        "isvisible" : false,
+        "images" : ["images/logo_h.png", "images/logo.png"]
+    },
     "fontes" : [
         {
             "server" : "decattech",

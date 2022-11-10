@@ -330,52 +330,50 @@ public class GF_painel_pagamentos {
                             
                             btnSave.setGraphic(FunctionsD.getImage("Icons/confirme.png"));
                             btnSave.setOnAction(e->{
-                                
-                        
-                                if(FunctionsD.ConfirmationDialog("Atualizando um pagamento", "Tem certeza disso?") == ButtonType.OK){
-                                    Objeto pagamento = (Objeto)getTableView().getItems().get(getIndex());
-                                    Connection.isOpen(true);
-                                    boolean noErrors = true;
-                                    String sql = "UPDATE tb_registro_pagamentos SET ";
-                                    String[] update = new String[3];
-                                    String where = "WHERE id = "+pagamento.getsFirst("id")+" ";
+                                boolean verify = true;
+                                Objeto pagamento = (Objeto)getTableView().getItems().get(getIndex());
+                                if(!Functions.isNull(pagamento.getsFirst("status"))){
 
-                                    boolean verify = true;
+                                    if(pagamento.getsFirst("status").equals("5")){
 
-                                    if(!Functions.isNull(pagamento.getsFirst("status"))){
-
-                                        if(pagamento.getsFirst("status").equals("5")){
-
-                                            if(Functions.isNull(pagamento.getsFirst("tipo_pagamento"))){
-                                                FunctionsD.DialogBox("Selecione um um tipo de pagamento!", 1);
-                                                verify = false;
-                                            }
-
+                                        if(Functions.isNull(pagamento.getsFirst("tipo_pagamento"))){
+                                            FunctionsD.DialogBox("Selecione um um tipo de pagamento!", 1);
+                                            verify = false;
                                         }
 
                                     }
 
-                                    if(verify){
+                                }
 
+                                if(verify){
+
+                                    if(FunctionsD.ConfirmationDialog("Atualizando um pagamento", "Tem certeza disso?") == ButtonType.OK){
+                                  
+                                        Connection.isOpen(true);
+                                        boolean noErrors = true;
+                                        String sql = "UPDATE tb_registro_pagamentos SET ";
+                                        String[] update = new String[3];
+                                        String where = "WHERE id = "+pagamento.getsFirst("id")+" ";
+    
                                         if(!Functions.isNull(pagamento.getsFirst("status"))){
                                     
                                             update[0] = " status = "+pagamento.getsFirst("status");
                                             
                                             if(pagamento.getsFirst("status").equals("5")){
                                                 double value = 0;
-                                               
+                                                
                                                 try{
                                                     value = Double.parseDouble(FunctionsFX.InputDialog("Atenção", "Informe o valor pago!", 2));
                                                 }catch(Exception e1){
                                                     FunctionsD.DialogBox("Informe um valor válido!", 1); 
-                                                    return;
+                                                    verify = false;
                                                 }
                                                 
                                                 update[2] += " valor_liquidado = "+value;
                                             }
                                         }
-                                       
-                                        if(!Functions.isNull(pagamento.getsFirst("tipo_pagamento"))){
+                                        
+                                        if(!Functions.isNull(pagamento.getsFirst("tipo_pagamento")) && verify){
                                             boolean isPix = pagamento.getsFirst("tipo_pagamento").equals("2");
                                             boolean hasInsertValue = !Functions.isNull(update[2]);
                                             
@@ -384,44 +382,48 @@ public class GF_painel_pagamentos {
                                             }
     
                                             update[1] = " tipo_pagamento = "+pagamento.getsFirst("tipo_pagamento");
-                                           
+                                            
                                             if(isPix){
                                                 double value = 0;
-                                                while(value == 0){
-                                                    try{
-                                                        value = Double.parseDouble(FunctionsFX.InputDialog("Atenção", "Informe o valor pago!", 2));
-                                                    }catch(Exception e1){
-                                                        value = 0;
-                                                    }
+                                                
+                                                try{
+                                                    value = Double.parseDouble(FunctionsFX.InputDialog("Atenção", "Informe o valor pago!", 2));
+                                                }catch(Exception e1){
+                                                    FunctionsD.DialogBox("Informe um valor válido!", 1); 
+                                                    verify = false;
                                                 }
+                                                
                                                 update[2] += " valor_liquidado = "+value;
                                             }
                                             
                                         }
     
-                                        sql += update[0] + ", " + update[1];
-                                        if(!Functions.isNull(update[2])){
-                                            sql += ","+update[2];
+                                        if(verify){
+                                            sql += update[0] + ", " + update[1];
+                                            if(!Functions.isNull(update[2])){
+                                                sql += ","+update[2];
+                                            }
+                                            sql += where;
+                                            
+                                            noErrors = Connection.CED(sql);
+        
+                                            if(noErrors){
+                                                FunctionsD.DialogBox("Pagamento Atualizado com sucesso!", 2);
+                                                Clear();
+                                                Search();
+                                            }
+        
+                                            Connection.isOpen(false);
                                         }
-                                        sql += where;
-                                        System.out.println(sql);
     
-                                        noErrors = Connection.CED(sql);
+                                        
     
-                                        if(noErrors){
-                                            FunctionsD.DialogBox("Pagamento Atualizado com sucesso!", 2);
-                                            Clear();
-                                            Search();
-                                        }
+                                       
     
-                                        Connection.isOpen(false);
-
                                     }
-
                                    
-
                                 }
-                                
+ 
 
                                
                             });

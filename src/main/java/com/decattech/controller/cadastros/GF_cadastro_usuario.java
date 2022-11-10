@@ -8,6 +8,7 @@ import org.jasypt.util.password.StrongPasswordEncryptor;
 
 import com.decattech.Main;
 import com.decattech.model.Connection;
+import com.decattech.model.FunctionsD;
 import com.functions.Functions;
 import com.functions.FunctionsFX;
 import com.functions.dao.Query;
@@ -143,51 +144,66 @@ public class GF_cadastro_usuario implements Interface_Cadastro {
         Object[] verify = {"string","textfield",txtNome,txtUsuario,txtNivel};
         Object[] verify2= {"combobox",cbSituacao};
 
-        if(!FunctionsFX.verify(verify) && !FunctionsFX.verify(verify2)){
-
-            String type = "", msgConfirmation = "",where = "",msgConcluded = "";
-
-            if(tbUsuarios.getSelectionModel().getSelectedIndex() == -1){
-                type = "INSERT INTO ";
-                msgConfirmation = "Adicionando um novo usuário";
-                msgConcluded = "Usuário Adicionado com sucesso!";
-            }else{
-                Objeto usuario = (Objeto)tbUsuarios.getSelectionModel().getSelectedItem();
-                type = "UPDATE ";
-                msgConfirmation = "Atualizando um usuário";
-                msgConcluded = "Usuário Atualizado com sucesso!";
-                where = " WHERE id = '"+usuario.getsFirst("id")+"'";
-            }
-
-            Object[] confirmDialog = {msgConfirmation,"Tem certeza disso?"};
-
-            if(FunctionsFX.ConfirmationDialog(confirmDialog) == ButtonType.OK){
-                PasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
-                String senha = "";
-
-                if(FunctionsFX.isNull(txtSenha.getText()) && type.contains("INSERT")){
-                    senha = ",password = '"+passwordEncryptor.encryptPassword("123")+"'";
-                }else if(type.contains("INSERT")){
-                    senha = ",password = '"+passwordEncryptor.encryptPassword(txtSenha.getText())+"'";
-                }
-
-                String sql = type+" tb_usuarios SET nome_user = upper('"+Relatorios.Limited(txtNome.getText(),255)+"'), login = '"+Relatorios.Limited(txtUsuario.getText(),255)+"'"
-                +", nivel_acesso = '"
-                +txtNivel.getText()+"',status = '"+cbSituacao.getValue().getId()+"', iduser='"+Main.user.getsFirst("id")+"' "+senha+""+where;
-                
-                query.isOpen(true);
-                Object[] psql = {sql};
-                
-                if(query.CED(psql)){
-                    Object[] concludedDialog = {"Atenção!",msgConcluded, 2};
-                    FunctionsFX.dialogBox(concludedDialog);
-                    Clear();
-                    Search();
-                }
-                query.isOpen(false);
-            }
-
+        if(FunctionsFX.verify(verify) || FunctionsFX.verify(verify2)){
+            return;
         }
+        
+        
+
+        String type = "", msgConfirmation = "",where = "",msgConcluded = "";
+        String sqlc = "SELECT COUNT(*) FROM tb_usuarios WHERE login = '"+txtUsuario.getText()+"'";
+        if(tbUsuarios.getSelectionModel().getSelectedIndex() == -1){
+            type = "INSERT INTO ";
+            msgConfirmation = "Adicionando um novo usuário";
+            msgConcluded = "Usuário Adicionado com sucesso!";
+        }else{
+            Objeto usuario = (Objeto)tbUsuarios.getSelectionModel().getSelectedItem();
+            type = "UPDATE ";
+            msgConfirmation = "Atualizando um usuário";
+            msgConcluded = "Usuário Atualizado com sucesso!";
+            where = " WHERE id = '"+usuario.getsFirst("id")+"'";
+            sqlc += " AND id != "+usuario.getsFirst("id");
+        }
+
+        query.isOpen(true);
+        Object[] count = {sqlc};
+        boolean existLogin = !query.Count(count).equals("0");
+        
+        if(existLogin){
+            query.isOpen(false);
+            FunctionsD.DialogBox("Nome de Usuário já existe!", 1);
+            return;
+        }
+
+        Object[] confirmDialog = {msgConfirmation,"Tem certeza disso?"};
+
+        if(FunctionsFX.ConfirmationDialog(confirmDialog) == ButtonType.OK){
+            PasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
+            String senha = "";
+
+            if(FunctionsFX.isNull(txtSenha.getText()) && type.contains("INSERT")){
+                senha = ",password = '"+passwordEncryptor.encryptPassword("123")+"'";
+            }else if(type.contains("INSERT")){
+                senha = ",password = '"+passwordEncryptor.encryptPassword(txtSenha.getText())+"'";
+            }
+
+            String sql = type+" tb_usuarios SET nome_user = upper('"+Relatorios.Limited(txtNome.getText(),255)+"'), login = '"+Relatorios.Limited(txtUsuario.getText(),255)+"'"
+            +", nivel_acesso = '"
+            +txtNivel.getText()+"',status = '"+cbSituacao.getValue().getId()+"', iduser='"+Main.user.getsFirst("id")+"' "+senha+""+where;
+            
+            
+            Object[] psql = {sql};
+            
+            if(query.CED(psql)){
+                Object[] concludedDialog = {"Atenção!",msgConcluded, 2};
+                FunctionsFX.dialogBox(concludedDialog);
+                Clear();
+                Search();
+            }
+            query.isOpen(false);
+        }
+
+        
     }
 
     @Override

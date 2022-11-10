@@ -6,7 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox id="vbMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" stylesheets="@../../css/processos/GF_painel_pagamentos.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.decattech.controller.processos.GF_painel_pagamentos">
+<VBox id="vbMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" stylesheets="@../../css/processos/GF_painel_pagamentos.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.decattech.controller.processos.GF_painel_pagamentos">
    <children>
       <GridPane prefHeight="66.0" prefWidth="1080.0">
         <columnConstraints>
@@ -149,13 +149,13 @@
       <TableView fx:id="tbPagamentos" prefHeight="200.0" prefWidth="200.0" stylesheets="@../../css/style_table.css" VBox.vgrow="ALWAYS">
         <columns>
           <TableColumn fx:id="colCliente" maxWidth="10000.0" prefWidth="75.0" text="Cliente" />
-          <TableColumn fx:id="colVencimento" maxWidth="7000.0" prefWidth="75.0" text="Vencimento" />
+          <TableColumn fx:id="colVencimento" maxWidth="6000.0" prefWidth="75.0" text="Vencimento" />
             <TableColumn fx:id="colLiquidacao" maxWidth="7000.0" prefWidth="75.0" text="Liquidação" />
-            <TableColumn fx:id="colValorTitulo" maxWidth="6500.0" prefWidth="75.0" text="Valor Titulo" />
-            <TableColumn fx:id="colValorPago" maxWidth="6500.0" prefWidth="75.0" text="Valor Pago" />
+            <TableColumn fx:id="colValorTitulo" maxWidth="6000.0" prefWidth="75.0" text="Valor Titulo" />
+            <TableColumn fx:id="colValorPago" maxWidth="6000.0" prefWidth="75.0" text="Valor Pago" />
             <TableColumn fx:id="colFormaPagamento" maxWidth="7000.0" prefWidth="75.0" text="Forma de Pag." />
             <TableColumn fx:id="colSituacao" maxWidth="9000.0" prefWidth="75.0" text="Situação" />
-            <TableColumn fx:id="colButton" maxWidth="3000.0" prefWidth="75.0" />
+            <TableColumn fx:id="colButton" maxWidth="2500.0" prefWidth="75.0" />
         </columns>
          <VBox.margin>
             <Insets top="10.0" />
