@@ -60,7 +60,7 @@ public class GF_painel_pagamentos {
     
     @FXML private ComboBox<Object> cbCliente;
     
-    @FXML private Label lbLoading;
+    @FXML private Label lbLoading, lbTotal, lbTotalPendente, lbTotalCancelado, lbTotalInad, lbTotalAdi;
 
     private Loading load;
 
@@ -198,7 +198,7 @@ public class GF_painel_pagamentos {
                 tb_status sts ON rp.status = sts.id
                     LEFT JOIN
                 tb_tipo_pagamentos tp ON rp.tipo_pagamento = tp.id        
-                """+" WHERE mes = "+cbMes.getValue().getId()+" AND ano = "+txtAno.getText()+"";
+                """+" WHERE mes = "+cbMes.getValue().getId()+" AND ano = "+txtAno.getText()+" AND cli.status = 1";
         
         if(!Functions.isNull(where)){
             sql += where;
@@ -212,6 +212,26 @@ public class GF_painel_pagamentos {
             tbPagamentos.setItems(FXCollections.observableArrayList(Connection.query.query(psql)));
             Connection.isOpen(false);
             Platform.runLater(()->{
+                int pendentes = 0, adimplentes = 0, inadimplentes = 0, cancelados = 0;
+                for (int i = 0; i < tbPagamentos.getItems().size(); i++) {
+                   
+                    String status = ((Objeto)tbPagamentos.getItems().get(i)).getsFirst("status");
+                    if(status.equals("3")){
+                        pendentes++;
+                    }else if(status.equals("4")){
+                        inadimplentes++;
+                    }else if(status.equals("5")){
+                        adimplentes++;
+                    }else if(status.equals("6")){
+                        cancelados++;
+                    }
+                }
+
+                lbTotalAdi.setText("Total de Clientes Adimplentes: "+adimplentes);
+                lbTotalInad.setText("Total de Clientes Inadimplentes: "+inadimplentes);
+                lbTotalCancelado.setText("Total de Registros Cancelados: "+cancelados);
+                lbTotalPendente.setText("Total de Registros Pendentes: "+pendentes);
+                lbTotal.setText("Total de Registros: "+tbPagamentos.getItems().size());
                 tbPagamentos.refresh();
             });
         });
@@ -242,6 +262,16 @@ public class GF_painel_pagamentos {
                                 if(cbFormas.getValue() != null){
                                     var l = new ArrayList<Object>();
                                     l.add(cbFormas.getValue().getId()+"");
+                                    pagamento.set("tipo_pagamento", l);
+                                }
+                            });
+                            cbFormas.setOnMouseClicked(e->{
+                             
+                                if(e.getClickCount() == 2){
+                                    Objeto pagamento = (Objeto)getTableView().getItems().get(getIndex());
+                                    cbFormas.setValue(null);
+                                    var l = new ArrayList<Object>();
+                                    l.add(null);
                                     pagamento.set("tipo_pagamento", l);
                                 }
                             });
@@ -341,6 +371,16 @@ public class GF_painel_pagamentos {
                                             verify = false;
                                         }
 
+                                    }else if(!Functions.isNull(pagamento.getsFirst("tipo_pagamento"))){
+
+                                        if(!pagamento.getsFirst("status").equals("5")){
+
+                                            var l = new ArrayList<Object>();
+                                            l.add("5");
+                                            pagamento.set("status", l);
+                                            
+                                        }
+
                                     }
 
                                 }
@@ -348,12 +388,12 @@ public class GF_painel_pagamentos {
                                 if(verify){
 
                                     if(FunctionsD.ConfirmationDialog("Atualizando um pagamento", "Tem certeza disso?") == ButtonType.OK){
-                                  
+                                     
                                         Connection.isOpen(true);
                                         boolean noErrors = true;
                                         String sql = "UPDATE tb_registro_pagamentos SET ";
                                         String[] update = new String[3];
-                                        String where = "WHERE id = "+pagamento.getsFirst("id")+" ";
+                                        String where = " WHERE id = "+pagamento.getsFirst("id")+" ";
     
                                         if(!Functions.isNull(pagamento.getsFirst("status"))){
                                     
@@ -369,7 +409,7 @@ public class GF_painel_pagamentos {
                                                     verify = false;
                                                 }
                                                 
-                                                update[2] += " valor_liquidado = "+value;
+                                                update[2] = " valor_liquidado = "+value;
                                             }
                                         }
                                         
@@ -393,9 +433,12 @@ public class GF_painel_pagamentos {
                                                     verify = false;
                                                 }
                                                 
-                                                update[2] += " valor_liquidado = "+value;
+                                                update[2] = " valor_liquidado = "+value;
                                             }
                                             
+                                        }else if(verify){
+                                            update[1] = " tipo_pagamento = null";
+                                            update[2] = " valor_liquidado = null";
                                         }
     
                                         if(verify){
@@ -404,7 +447,7 @@ public class GF_painel_pagamentos {
                                                 sql += ","+update[2];
                                             }
                                             sql += where;
-                                            
+                                          
                                             noErrors = Connection.CED(sql);
         
                                             if(noErrors){
@@ -675,7 +718,7 @@ public class GF_painel_pagamentos {
 
                     boolean wasCanceled = !Functions.isNull(cliente.getsFirst(colunas.getString("dt_cancelado")));
                     
-                    if(ExistsPayment == false && wasCanceled == false){
+                    if((ExistsPayment == false || Valor_Titulo > 0) && wasCanceled == false){
                         status = ", status = '"+verifyStatus(cliente, colunas)+"'";
                     }else if(wasCanceled){
                         Object[] parseDate = {cliente.getsFirst(colunas.getString("dt_cancelado")),colunas.getString("dt_cancelado_Formato"),"format string","yyyy-MM-dd HH:mm:ss"};

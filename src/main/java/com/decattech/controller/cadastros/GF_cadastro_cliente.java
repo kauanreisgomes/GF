@@ -43,7 +43,7 @@ public class GF_cadastro_cliente implements Interface_Cadastro {
 
     @FXML private TableColumn<Object, String> colCpfCnpj, colEmail, colNome, colSituacao, colTel01, colTel02, colTipo;
 
-    @FXML private Label lbLoading;
+    @FXML private Label lbLoading,lbTotal;
     
     @FXML private ProgressBar pbLoader;
 
@@ -277,6 +277,7 @@ public class GF_cadastro_cliente implements Interface_Cadastro {
             tbCliente.setItems(FXCollections.observableArrayList(Connection.query.query(psql)));
             Connection.isOpen(false);
             Platform.runLater(()->{
+                lbTotal.setText("Total de Clientes: "+Integer.toString(tbCliente.getItems().size()));
                 TableClick();
                 tbCliente.refresh();
             });
