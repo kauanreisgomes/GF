@@ -74,9 +74,10 @@ public class GF_painel_pagamentos {
        
         
         Keys();
-        Connection.isOpen(true);
-        listaFormasPag = Connection.ListCB("SELECT id, nome FROM tb_tipo_pagamentos WHERE status = 1");
-        listaSituacao = Connection.ListCB("SELECT id, nome FROM tb_status WHERE id_grupo = 2");
+        Connection con = new Connection();
+        con.isOpen(true);
+        listaFormasPag = con.ListCB("SELECT id, nome FROM tb_tipo_pagamentos WHERE status = 1");
+        listaSituacao = con.ListCB("SELECT id, nome FROM tb_status WHERE id_grupo = 2");
         
         cbFormaPagamento.setItems(FXCollections.observableArrayList(listaFormasPag));
         cbStatus.setItems(FXCollections.observableArrayList(listaSituacao));
@@ -117,11 +118,11 @@ public class GF_painel_pagamentos {
         cbPesquisa.setItems(FXCollections.observableArrayList(colunas));
 
         //Atualiza os registros que estavam pendentes e não foram pagos antes do vencimento.
-        Connection.CED("UPDATE tb_registro_pagamentos SET status = 4 WHERE dt_vencimento < now() AND status = 3 AND (valor_liquidado = 0 or valor_liquidado is null) ");
+        con.CED("UPDATE tb_registro_pagamentos SET status = 4 WHERE dt_vencimento < now() AND status = 3 AND (valor_liquidado = 0 or valor_liquidado is null) ");
 
         Object[] psql = {"select id, nome, cpf_cnpj from tb_cliente where status = 1","objeto combobox","nome","id","nome"};
-        cbCliente.setItems(FXCollections.observableArrayList(Connection.query.query(psql)));
-        Connection.isOpen(false);
+        cbCliente.setItems(FXCollections.observableArrayList(con.query.query(psql)));
+        con.isOpen(false);
        
 
         Platform.runLater(()->{
@@ -208,9 +209,10 @@ public class GF_painel_pagamentos {
 
         Object[] psql = {sql,"objeto combobox","cliente","cliente"};
         load.startThread(()->{
-            Connection.isOpen(true);
-            tbPagamentos.setItems(FXCollections.observableArrayList(Connection.query.query(psql)));
-            Connection.isOpen(false);
+            Connection con = new Connection();
+            con.isOpen(true);
+            tbPagamentos.setItems(FXCollections.observableArrayList(con.query.query(psql)));
+            con.isOpen(false);
             Platform.runLater(()->{
                 int pendentes = 0, adimplentes = 0, inadimplentes = 0, cancelados = 0;
                 for (int i = 0; i < tbPagamentos.getItems().size(); i++) {
@@ -388,8 +390,8 @@ public class GF_painel_pagamentos {
                                 if(verify){
 
                                     if(FunctionsD.ConfirmationDialog("Atualizando um pagamento", "Tem certeza disso?") == ButtonType.OK){
-                                     
-                                        Connection.isOpen(true);
+                                        Connection con = new Connection();
+                                      
                                         boolean noErrors = true;
                                         String sql = "UPDATE tb_registro_pagamentos SET ";
                                         String[] update = new String[3];
@@ -447,16 +449,18 @@ public class GF_painel_pagamentos {
                                                 sql += ","+update[2];
                                             }
                                             sql += where;
-                                          
-                                            noErrors = Connection.CED(sql);
-        
+
+                                            con.isOpen(true);
+                                            noErrors = con.CED(sql);
+                                            con.isOpen(false);
+
                                             if(noErrors){
                                                 FunctionsD.DialogBox("Pagamento Atualizado com sucesso!", 2);
                                                 Clear();
                                                 Search();
                                             }
         
-                                            Connection.isOpen(false);
+                                            
                                         }
     
                                         
@@ -594,8 +598,6 @@ public class GF_painel_pagamentos {
                     
                     if(FunctionsD.ConfirmationDialog("Você está importando um arquivo", "Tem certeza disso?") == ButtonType.OK){
                         load.startThread(()->{
-
-                            Connection.isOpen(true);
                             CsvReader csv = new CsvReader();
                             char separtor = FunctionsD.getJSON("config/import.json").getString("separator").toCharArray()[0];
                             Object[] parametros = {separtor};
@@ -611,8 +613,6 @@ public class GF_painel_pagamentos {
                                     }
                                 }
                             }
-
-                            Connection.isOpen(false);
 
                         });
                     }
@@ -632,16 +632,20 @@ public class GF_painel_pagamentos {
         if(colunas == null){
             allRight = false;
         }else{
+
+            Connection connection = new Connection();
+            connection.isOpen(true);
+
             for (int i = 0; i < csv.size(); i++) {
                 
                 Objeto cliente = (Objeto)csv.get(i);
              
-                boolean ExistsClient = !Connection.Count("SELECT COUNT(*) FROM tb_cliente WHERE cpf_cnpj = '"+cliente.getsFirst(colunas.getString("cpf_cnpj"))+"'").equals("0");
+                boolean ExistsClient = !connection.Count("SELECT COUNT(*) FROM tb_cliente WHERE cpf_cnpj = '"+cliente.getsFirst(colunas.getString("cpf_cnpj"))+"'").equals("0");
                 String type = "INSERT INTO ";
                 String where = "";
                 if(ExistsClient){
                     type = "UPDATE ";
-                    String idcliente = Connection.Search("SELECT id FROM tb_cliente WHERE cpf_cnpj = '"+cliente.getsFirst(colunas.getString("cpf_cnpj"))+"'").get(0);
+                    String idcliente = connection.Search("SELECT id FROM tb_cliente WHERE cpf_cnpj = '"+cliente.getsFirst(colunas.getString("cpf_cnpj"))+"'").get(0);
                     where = " WHERE id = '"+idcliente+"'";
                 }
                     String sql = type+" tb_cliente SET nome = upper('"+cliente.getsFirst(colunas.getString("nome"))+"'), cpf_cnpj = '"+cliente.getsFirst(colunas.getString("cpf_cnpj"))+"'"
@@ -650,13 +654,15 @@ public class GF_painel_pagamentos {
                     +", bairro = '"+cliente.getsFirst(colunas.getString("bairro"))+"' , cidade = '"+cliente.getsFirst(colunas.getString("cidade"))+"'"
                     +", estado = '"+cliente.getsFirst(colunas.getString("estado"))+"', cep = '"+cliente.getsFirst(colunas.getString("cep"))+"', iduser = '"+Main.user.getsFirst("id")+"'"+where;
                   
-                    if(!Connection.CED(sql)){
+                    if(!connection.CED(sql)){
                         allRight = false;
                     }
 
                 
 
             }
+            
+            connection.isOpen(false);
         }
 
         return allRight;
@@ -669,24 +675,26 @@ public class GF_painel_pagamentos {
         if(colunas == null){
             allRight = false;
         }else{
+            Connection connection = new Connection();
+            connection.isOpen(true);
             for (int i = 0; i < csv.size(); i++) {
                 Objeto cliente = (Objeto)csv.get(i);
-               
-                boolean ExistsClient = !Connection.Count("SELECT COUNT(*) FROM tb_cliente WHERE cpf_cnpj = '"+cliente.getsFirst(colunas.getString("cpf_cnpj"))+"'").equals("0");
+              
+                boolean ExistsClient = !connection.Count("SELECT COUNT(*) FROM tb_cliente WHERE cpf_cnpj = '"+cliente.getsFirst(colunas.getString("cpf_cnpj"))+"'").equals("0");
                 String type = "INSERT INTO ";
                 String where = "";
                 
                 if(ExistsClient){
-                    String idCliente = Connection.Search("SELECT id FROM tb_cliente WHERE cpf_cnpj = '"+cliente.getsFirst(colunas.getString("cpf_cnpj"))+"'").get(0);
+                    String idCliente = connection.Search("SELECT id FROM tb_cliente WHERE cpf_cnpj = '"+cliente.getsFirst(colunas.getString("cpf_cnpj"))+"'").get(0);
                     String vencimento = cliente.getsFirst(colunas.getString("dt_vencimento"));
                     int ano = Integer.parseInt(vencimento.substring(vencimento.lastIndexOf("/")+1));
                     int mes = Integer.parseInt(vencimento.substring(vencimento.indexOf("/")+1, vencimento.lastIndexOf("/")));
                     
-                    boolean ExistsPayment = !Connection.Count("SELECT COUNT(*) FROM tb_registro_pagamentos WHERE id_cliente = '"+idCliente+"' AND mes = "+mes+" AND ano = "+ano+"").equals("0");
+                    boolean ExistsPayment = !connection.Count("SELECT COUNT(*) FROM tb_registro_pagamentos WHERE id_cliente = '"+idCliente+"' AND mes = "+mes+" AND ano = "+ano+"").equals("0");
                    
                     if(ExistsPayment){
                         type = "UPDATE ";
-                        where = " WHERE id = '"+Connection.Search("SELECT id FROM tb_registro_pagamentos WHERE id_cliente = '"+idCliente+"' AND mes = "+mes+" AND ano = "+ano+"").get(0)+"'";
+                        where = " WHERE id = '"+connection.Search("SELECT id FROM tb_registro_pagamentos WHERE id_cliente = '"+idCliente+"' AND mes = "+mes+" AND ano = "+ano+"").get(0)+"'";
                     }
                     
                     Object[] parseDat = {cliente.getsFirst(colunas.getString("dt_emissao")),colunas.getString("dt_emissao_Formato"),"format string","yyyy-MM-dd HH:mm:ss"};
@@ -734,11 +742,12 @@ public class GF_painel_pagamentos {
                     
 
                     //Se der algo errado ele adiciona false ao allRight
-                    if(!Connection.CED(sql)){
+                    if(!connection.CED(sql)){
                         allRight = false;
                     }
                 }
             }
+            connection.isOpen(false);
         }
 
         return allRight;

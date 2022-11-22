@@ -58,17 +58,19 @@ public class GF_cadastro_telas {
     }
 
     private void Load(){
-        Connection.isOpen(true);
+
+        Connection connection = new Connection();
+        connection.isOpen(true);
         
         Object[] psql = {"SELECT id, nome FROM tb_status WHERE id_grupo = 1"};
-        var listStatus = Connection.query.listCb(psql);
+        var listStatus = connection.query.listCb(psql);
 
         cbSituacao_grupo.setItems(FXCollections.observableArrayList(listStatus));
         cbSituacao_telas.setItems(FXCollections.observableArrayList(listStatus));
 
-        cbGrupos_telas.setItems(FXCollections.observableArrayList(Connection.ListCB("SELECT id, titulo as nome FROM tb_telas_grupos WHERE status = 1")));
+        cbGrupos_telas.setItems(FXCollections.observableArrayList(connection.ListCB("SELECT id, titulo as nome FROM tb_telas_grupos WHERE status = 1")));
 
-        Connection.isOpen(false);
+        connection.isOpen(false);
 
         Object[] format = {1, 9, txtDescricao_telas, txtTitulo_telas, txtId_telas, txtDescricao_grupo,txtTitulo_grupo, txtId_grupo};
         FunctionsFX.formatRelased(format);
@@ -202,13 +204,14 @@ public class GF_cadastro_telas {
                     +", descricao = '"+txtDescricao_telas.getText()+"', id_grupo = ("+cbGrupos_telas.getValue().getId()+"), status = ("+cbSituacao_telas.getValue().getId()+")"
                     +", iduser = ("+Main.user.getsFirst("id")+")"+where;
 
-                    Connection.isOpen(true);
-                    if(Connection.CED(sql)){
+                    Connection connection = new Connection();
+                    connection.isOpen(true);
+                    if(connection.CED(sql)){
                         FunctionsD.DialogBox(concluded, 2);
                         Clear();
                         Search();
                     }
-                    Connection.isOpen(false);
+                    connection.isOpen(false);
                 }
             }
 
@@ -237,15 +240,16 @@ public class GF_cadastro_telas {
                     +", descricao = '"+txtDescricao_grupo.getText()+"', status = ("+cbSituacao_grupo.getValue().getId()+")"
                     +", iduser = ("+Main.user.getsFirst("id")+")"+where;
 
-                    Connection.isOpen(true);
-                    if(Connection.CED(sql)){
+                    Connection connection = new Connection();
+                    connection.isOpen(true);
+                    if(connection.CED(sql)){
                         FunctionsD.DialogBox(concluded, 2);
                         //Atualiza o Combobox cbGrupos da tabTelas.
-                        cbGrupos_telas.setItems(FXCollections.observableArrayList(Connection.ListCB("SELECT id, titulo as nome FROM tb_telas_grupos WHERE status = 1")));
+                        cbGrupos_telas.setItems(FXCollections.observableArrayList(connection.ListCB("SELECT id, titulo as nome FROM tb_telas_grupos WHERE status = 1")));
                         Clear();
                         Search();
                     }
-                    Connection.isOpen(false);
+                    connection.isOpen(false);
                 }
             }
         }
@@ -273,14 +277,14 @@ public class GF_cadastro_telas {
 
                 if(FunctionsD.ConfirmationDialog(confirmation, "Tem certeza disso?") == ButtonType.OK){
                     String sql = "UPDATE tb_telas SET status = "+value+" WHERE id = "+tela.getsFirst("id");
-
-                    Connection.isOpen(true);
-                    if(Connection.CED(sql)){
+                    Connection connection = new Connection();
+                    connection.isOpen(true);
+                    if(connection.CED(sql)){
                         FunctionsD.DialogBox(concluded, 2);
                         Clear();
                         Search();
                     }
-                    Connection.isOpen(false);
+                    connection.isOpen(false);
                 }
 
             }else{
@@ -306,16 +310,16 @@ public class GF_cadastro_telas {
 
                 if(FunctionsD.ConfirmationDialog(confirmation, "Tem certeza disso?") == ButtonType.OK){
                     String sql = "UPDATE tb_telas_grupos SET status = "+value+" WHERE id = "+grupo.getsFirst("id");
-
-                    Connection.isOpen(true);
-                    if(Connection.CED(sql)){
+                    Connection connection = new Connection();
+                    connection.isOpen(true);
+                    if(connection.CED(sql)){
                         FunctionsD.DialogBox(concluded, 2);
                         //atualiza o Combobox grupos da tabTelas
-                        cbGrupos_telas.setItems(FXCollections.observableArrayList(Connection.ListCB("SELECT id, titulo as nome FROM tb_telas_grupos WHERE status = 1")));
+                        cbGrupos_telas.setItems(FXCollections.observableArrayList(connection.ListCB("SELECT id, titulo as nome FROM tb_telas_grupos WHERE status = 1")));
                         Clear();
                         Search();
                     }
-                    Connection.isOpen(false);
+                    connection.isOpen(false);
                 }
 
             }else{
@@ -353,10 +357,13 @@ public class GF_cadastro_telas {
             Object[] psql = {sql, "objeto"};
 
             load_telas.startThread(()->{
-                Connection.isOpen(true);
-                tbTelas.setItems(FXCollections.observableArrayList(Connection.query.query(psql)));
-                Connection.isOpen(false);
+                Connection connection = new Connection();
+                connection.isOpen(true);
+                final var items = FXCollections.observableArrayList(connection.query.query(psql));
+                
+                connection.isOpen(false);
                 Platform.runLater(()->{
+                    tbTelas.setItems(items);
                     TableClick();
                     tbTelas.refresh();
                 });
@@ -388,10 +395,13 @@ public class GF_cadastro_telas {
             Object[] psql = {sql,"objeto"};
 
             load_grupo.startThread(()->{
-                Connection.isOpen(true);
-                tbGrupo.setItems(FXCollections.observableArrayList(Connection.query.query(psql)));
-                Connection.isOpen(false);
+                Connection connection = new Connection();
+                connection.isOpen(true);
+                final var items = FXCollections.observableArrayList(connection.query.query(psql));
+               
+                connection.isOpen(false);
                 Platform.runLater(()->{
+                    tbGrupo.setItems(items);
                     TableClick();
                     tbGrupo.refresh();
                 });

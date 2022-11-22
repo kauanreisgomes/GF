@@ -67,9 +67,11 @@ public class GF_cadastro_cliente implements Interface_Cadastro {
         FunctionsFX.formatRelased(toFomartString);
 
         cbPesquisar.setItems(FXCollections.observableArrayList(Colunas));
-        Connection.isOpen(true);
-        cbSituacao.setItems(FXCollections.observableArrayList(Connection.ListCB("SELECT id, nome FROM tb_status WHERE id_grupo = 1")));
-        Connection.isOpen(false);
+
+        Connection connection = new Connection();
+        connection.isOpen(true);
+        cbSituacao.setItems(FXCollections.observableArrayList(connection.ListCB("SELECT id, nome FROM tb_status WHERE id_grupo = 1")));
+        connection.isOpen(false);
 
         List<Combobox> tipos = new ArrayList<>();
         tipos.add(new Combobox(1,"Fisica"));
@@ -171,13 +173,14 @@ public class GF_cadastro_cliente implements Interface_Cadastro {
                     +", cidade = '"+Relatorios.Limited(txtCidade.getText(), 255)+"', estado = '"+Relatorios.Limited(txtEstado.getText(), 255)+"'"
                     +", cep = '"+Relatorios.Limited(txtCidade.getText(), 255)+"', iduser = '"+Main.user.getsFirst("id")+"', status = "+cbSituacao.getValue().getId()+"" + where;
                     
-                    Connection.isOpen(true);
-                    if(Connection.CED(sql)){
+                    Connection connection = new Connection();
+                    connection.isOpen(true);
+                    if(connection.CED(sql)){
                         FunctionsD.DialogBox(msgConcluded, 2);
                         Clear();
                         Search();
                     }
-                    Connection.isOpen(false);
+                    connection.isOpen(false);
                 }
 
             }
@@ -206,13 +209,14 @@ public class GF_cadastro_cliente implements Interface_Cadastro {
             if(FunctionsD.ConfirmationDialog(msgConfirmation, "Tem certeza disso?") == ButtonType.OK){
                 String sql = "UPDATE tb_cliente SET status = "+value+" WHERE id = '"+cliente.getsFirst("id")+"'";
 
-                Connection.isOpen(true);
-                if(Connection.CED(sql)){
+                Connection connection = new Connection();
+                connection.isOpen(true);
+                if(connection.CED(sql)){
                     FunctionsD.DialogBox(msgConcluded, 2);
                     Clear();
                     Search();
                 }
-                Connection.isOpen(false);
+                connection.isOpen(false);
             }
 
         }else{
@@ -273,10 +277,12 @@ public class GF_cadastro_cliente implements Interface_Cadastro {
         Object[] psql = {sql,"objeto"};
 
         load.startThread(()->{
-            Connection.isOpen(true);
-            tbCliente.setItems(FXCollections.observableArrayList(Connection.query.query(psql)));
-            Connection.isOpen(false);
+            Connection connection = new Connection();
+            connection.isOpen(true);
+            final var items = FXCollections.observableArrayList(connection.query.query(psql));
+            connection.isOpen(false);
             Platform.runLater(()->{
+                tbCliente.setItems(items);
                 lbTotal.setText("Total de Clientes: "+Integer.toString(tbCliente.getItems().size()));
                 TableClick();
                 tbCliente.refresh();
@@ -374,7 +380,8 @@ public class GF_cadastro_cliente implements Interface_Cadastro {
                 if(FunctionsD.ConfirmationDialog("Você está importando um arquivo", "Tem certeza disso?") == ButtonType.OK){
                     load.startThread(()->{
 
-                        Connection.isOpen(true);
+                        Connection connection = new Connection();
+                        connection.isOpen(true);
                         CsvReader csv = new CsvReader();
                         char separtor = FunctionsD.getJSON("config/import.json").getString("separator").toCharArray()[0];
                         Object[] parametros = {separtor};
@@ -393,12 +400,12 @@ public class GF_cadastro_cliente implements Interface_Cadastro {
                                     
                                     Objeto cliente = (Objeto)items.get(i);
                                  
-                                    boolean ExistsClient = !Connection.Count("SELECT COUNT(*) FROM tb_cliente WHERE cpf_cnpj = '"+cliente.getsFirst(colunas.getString("cpf_cnpj"))+"'").equals("0");
+                                    boolean ExistsClient = !connection.Count("SELECT COUNT(*) FROM tb_cliente WHERE cpf_cnpj = '"+cliente.getsFirst(colunas.getString("cpf_cnpj"))+"'").equals("0");
                                     String type = "INSERT INTO ";
                                     String where = "";
                                     if(ExistsClient){
                                         type = "UPDATE ";
-                                        String idcliente = Connection.Search("SELECT id FROM tb_cliente WHERE cpf_cnpj = '"+cliente.getsFirst(colunas.getString("cpf_cnpj"))+"'").get(0);
+                                        String idcliente = connection.Search("SELECT id FROM tb_cliente WHERE cpf_cnpj = '"+cliente.getsFirst(colunas.getString("cpf_cnpj"))+"'").get(0);
                                         where = " WHERE id = '"+idcliente+"'";
                                     }
                                         String sql = type+" tb_cliente SET nome = upper('"+cliente.getsFirst(colunas.getString("nome"))+"'), cpf_cnpj = '"+cliente.getsFirst(colunas.getString("cpf_cnpj"))+"'"
@@ -407,7 +414,7 @@ public class GF_cadastro_cliente implements Interface_Cadastro {
                                         +", bairro = '"+cliente.getsFirst(colunas.getString("bairro"))+"' , cidade = '"+cliente.getsFirst(colunas.getString("cidade"))+"'"
                                         +", estado = '"+cliente.getsFirst(colunas.getString("estado"))+"', cep = '"+cliente.getsFirst(colunas.getString("cep"))+"', iduser = '"+Main.user.getsFirst("id")+"'"+where;
                                       
-                                        allRight = Connection.CED(sql);
+                                        allRight = connection.CED(sql);
                     
                                     
                     
@@ -418,7 +425,7 @@ public class GF_cadastro_cliente implements Interface_Cadastro {
                             }
                         }
 
-                        Connection.isOpen(false);
+                        connection.isOpen(false);
 
                     });
                 }

@@ -16,7 +16,7 @@ import com.functions.models.Combobox;
 import com.functions.models.Objeto;
 
 public class Connection {
-    public static Query query;
+    public Query query;
     public Connection(){
         try{
             
@@ -40,7 +40,7 @@ public class Connection {
     
     }
 
-    public static boolean verifyUser(String user, String password){
+    public boolean verifyUser(String user, String password){
         
         query.isOpen(true);
       
@@ -61,31 +61,31 @@ public class Connection {
   
     }
 
-    public static void isOpen(boolean open){
+    public void isOpen(boolean open){
         query.isOpen(open);
     }
 
-    public static List<Object> query(String sql, String type){
+    public List<Object> query(String sql, String type){
         Object[] psql = {sql,type};
         return query.query(psql);
     }
 
-    public static boolean CED(String sql){
+    public boolean CED(String sql){
         Object[] psql = {sql};
         return query.CED(psql);
     }
 
-    public static String Count(String sql){
+    public String Count(String sql){
         Object[] psql = {sql};
         return query.Count(psql);
     }
 
-    public static List<Combobox> ListCB(String sql){
+    public List<Combobox> ListCB(String sql){
         Object[] psql = {sql};
         return query.listCb(psql);
     }
 
-    public static List<String> Search(String sql){
+    public List<String> Search(String sql){
         Object[] psql = {sql};
         return query.search(psql);
     }

@@ -77,15 +77,16 @@ public class GF_login {
         boolean allFilled = !FunctionsFX.verify(verify);
         
         if(allFilled){
-            Connection.isOpen(true);
+            Connection con = new Connection();
+            con.isOpen(true);
 
-            boolean existsUser = !Connection.Count("SELECT count(*) FROM tb_usuarios WHERE status = 1 AND login='"+txtLogin.getText()+"'").equals("0");
+            boolean existsUser = !con.Count("SELECT count(*) FROM tb_usuarios WHERE status = 1 AND login='"+txtLogin.getText()+"'").equals("0");
 
-            Connection.isOpen(false);
+            con.isOpen(false);
             
             if(existsUser){
                 
-                if(Connection.verifyUser(txtLogin.getText(), txtPassword.getText())){
+                if(con.verifyUser(txtLogin.getText(), txtPassword.getText())){
 
                     startHome();
                     

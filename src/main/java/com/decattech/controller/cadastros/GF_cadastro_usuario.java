@@ -54,7 +54,7 @@ public class GF_cadastro_usuario implements Interface_Cadastro {
 
     private Loading load;
 
-    private volatile Query query = Connection.query;
+    private volatile Query query = new Connection().query;
 
     @FXML void initialize(){
 

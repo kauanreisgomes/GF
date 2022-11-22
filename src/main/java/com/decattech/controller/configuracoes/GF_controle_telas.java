@@ -42,9 +42,10 @@ public class GF_controle_telas {
 
     private void Load(){
 
-        Connection.isOpen(true);
+        Connection connection = new Connection();
+        connection.isOpen(true);
         cbGrupo.setItems(FXCollections.observableArrayList(
-        Connection.ListCB("""
+        connection.ListCB("""
                 SELECT 
                     tg.id, tg.titulo as grupo
                 FROM
@@ -66,8 +67,8 @@ public class GF_controle_telas {
             WHERE
                 user.status = 1
                 ""","objeto combobox","nome","id","nome"};
-        cbNome.setItems(FXCollections.observableArrayList(Connection.query.query(psql)));
-        Connection.isOpen(false);
+        cbNome.setItems(FXCollections.observableArrayList(connection.query.query(psql)));
+        connection.isOpen(false);
         
         Object[] toFormat = {cbNome};
         FunctionsFX.formatComboBoxObject(toFormat);
@@ -126,13 +127,13 @@ public class GF_controle_telas {
             if(FunctionsD.ConfirmationDialog("Adicionando um menu ao usuário", "Tem certeza disso?") == ButtonType.OK){
                 String sql = "INSERT INTO tb_permissao_telas SET id_tela = "+menu.getsFirst("id")+", id_user = "+user.getsFirst("id")+""
                 +", iduser_cadastro = "+Main.user.getsFirst("id");
-
-                Connection.isOpen(true);
-                if(Connection.CED(sql)){
+                Connection connection = new Connection();
+                connection.isOpen(true);
+                if(connection.CED(sql)){
                     FunctionsD.DialogBox("Tela vinculada ao usuário com sucesso!", 2);
                     Search();
                 }
-                Connection.isOpen(false);
+                connection.isOpen(false);
             }
         }else if(tbMenusUser.getSelectionModel().getSelectedIndex() != -1){
             Objeto tela = (Objeto)tbMenus.getSelectionModel().getSelectedItem();
@@ -141,12 +142,13 @@ public class GF_controle_telas {
             if(FunctionsD.ConfirmationDialog("Removendo uma tela do usuário", "Tem certeza disso?") == ButtonType.OK){
                 String sql = "DELETE FROM tb_permissao_telas WHERE (id_tela = "+tela.getsFirst("id")+" AND id_user = "+user.getsFirst("id")+")";
 
-                Connection.isOpen(true);
-                if(Connection.CED(sql)){
+                Connection connection = new Connection();
+                connection.isOpen(true);
+                if(connection.CED(sql)){
                     FunctionsD.DialogBox("Tela desvinculada do usuário com sucesso!", 2);
                     Search();
                 }
-                Connection.isOpen(false);
+                connection.isOpen(false);
             }
 
         }else{
@@ -174,13 +176,15 @@ public class GF_controle_telas {
         Object[] psql = {sql, "objeto"};
 
         load.startThread(()->{
-            Connection.isOpen(true);
-            tbMenus.setItems(FXCollections.observableArrayList(Connection.query.query(psql)));
+            Connection connection = new Connection();
+            connection.isOpen(true);
+            final var items = FXCollections.observableArrayList(connection.query.query(psql));
             Platform.runLater(()->{
+                tbMenus.setItems(items);
                 TableClick();
                 tbMenus.refresh();
             });
-            Connection.isOpen(false);
+            connection.isOpen(false);
         });
 
         if(cbNome.getValue() != null){
@@ -212,12 +216,15 @@ public class GF_controle_telas {
             Object[] psql_user = {sql_user,"objeto"};
 
             load.startThread(()->{
-                Connection.isOpen(true);
-                tbMenusUser.setItems(FXCollections.observableArrayList(Connection.query.query(psql_user)));
+                Connection connection = new Connection();
+                connection.isOpen(true);
+                final var items = FXCollections.observableArrayList(connection.query.query(psql_user));
+                
                 Platform.runLater(()->{
+                    tbMenusUser.setItems(items);
                     tbMenusUser.refresh();
                 });
-                Connection.isOpen(false);
+                connection.isOpen(false);
             });
         }
     }

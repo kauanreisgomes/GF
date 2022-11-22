@@ -44,15 +44,16 @@ public class GF_alterar_senha {
             PasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
             if(passwordEncryptor.checkPassword(txtPassword_Atual.getText(), Main.user.getsFirst("password"))){
                 if(txtPassword_Confirm.getText().equals(txtPassword_Nova.getText())){
-                    Connection.isOpen(true);
-                    if(Connection.CED("UPDATE tb_usuarios SET password = '"
+                    Connection connection = new Connection();
+                    connection.isOpen(true);
+                    if(connection.CED("UPDATE tb_usuarios SET password = '"
                     +passwordEncryptor.encryptPassword(txtPassword_Nova.getText())+"' WHERE id = '"+Main.user.getFirst("id")+"'")){
-                        Connection.isOpen(false);
+                        connection.isOpen(false);
                         FunctionsD.DialogBox("Senha atualizada com sucesso!", 2);
                         //ModifyScenes.close((Stage)txtPassword_Atual.getScene().getWindow());
                         GF_home.gf.Logout();
                     }else{
-                        Connection.isOpen(false);
+                        connection.isOpen(false);
                     }
                    
                 }else{
